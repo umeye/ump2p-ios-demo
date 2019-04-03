@@ -1,0 +1,39 @@
+[
+    {
+        "name": "UMP2PApiClient",
+        "version": "1.0.0",
+        "description": "UMP2P SDK 初始化",
+        "initializedInUIThread": true,
+        "initializerClass": "UMP2PApiClientLaunch",
+        "glueClassList": [],
+        "opts": {
+            "hosts": {
+                "test": "v0p2p.umeye.com",
+                "pre": "v0p2p.umeye.com",
+                "release": "v0p2p.umeye.com"
+            },
+            "logs": {
+                "test": true,
+                "pre": false,
+                "release": false
+            },
+            "port": "8888",
+            "appId": "2000000001",
+            "account": true,
+            "push": true
+        }
+    },
+    {
+        "name": "UMP2PPush",
+        "version": "1.0.0",
+        "description": "UMP2P 推送 模块",
+        "initializedInUIThread": false,
+        "initializerClass": "UMP2PPushLaunch",
+        "glueClassList": [],
+        "opts": {
+            "appId":"xxxxxxxx",
+            "appKey":"xxxxxxxx",
+            "appSecret":"xxxxxxxx",
+        }
+    }
+]

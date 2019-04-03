@@ -1,0 +1,414 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		06B158F09C8BC049489B62AA /* libPods-UMP2PDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 840922C8A7BD904D5ACA7C6D /* libPods-UMP2PDemo.a */; };
+		B6AE8F09224E0F8A00F483BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AE8F08224E0F8A00F483BE /* AppDelegate.m */; };
+		B6AE8F11224E0F8B00F483BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6AE8F10224E0F8B00F483BE /* Assets.xcassets */; };
+		B6AE8F17224E0F8B00F483BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AE8F16224E0F8B00F483BE /* main.m */; };
+		B6AF0DB22252538D000AB95C /* Launch.json in Resources */ = {isa = PBXBuildFile; fileRef = B6AF0DB12252538D000AB95C /* Launch.json */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		840922C8A7BD904D5ACA7C6D /* libPods-UMP2PDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UMP2PDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6AE8F04224E0F8A00F483BE /* UMP2PDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UMP2PDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B6AE8F07224E0F8A00F483BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		B6AE8F08224E0F8A00F483BE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		B6AE8F10224E0F8B00F483BE /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		B6AE8F15224E0F8B00F483BE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		B6AE8F16224E0F8B00F483BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		B6AE8F1D224E101800F483BE /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
+		B6AF0DB12252538D000AB95C /* Launch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Launch.json; sourceTree = "<group>"; };
+		B7D63A972778783E2470107D /* Pods-UMP2PDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UMP2PDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo.release.xcconfig"; sourceTree = "<group>"; };
+		C5C453870142A8D62E0EA086 /* Pods-UMP2PDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UMP2PDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo.debug.xcconfig"; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		B6AE8F01224E0F8A00F483BE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				06B158F09C8BC049489B62AA /* libPods-UMP2PDemo.a in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1A0BA81586E87B29613FC4D8 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				C5C453870142A8D62E0EA086 /* Pods-UMP2PDemo.debug.xcconfig */,
+				B7D63A972778783E2470107D /* Pods-UMP2PDemo.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
+		B6AE8EFB224E0F8A00F483BE = {
+			isa = PBXGroup;
+			children = (
+				B6AE8F06224E0F8A00F483BE /* UMP2PDemo */,
+				B6AE8F05224E0F8A00F483BE /* Products */,
+				1A0BA81586E87B29613FC4D8 /* Pods */,
+				DB4491CEF5948FA970BB1526 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		B6AE8F05224E0F8A00F483BE /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				B6AE8F04224E0F8A00F483BE /* UMP2PDemo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		B6AE8F06224E0F8A00F483BE /* UMP2PDemo */ = {
+			isa = PBXGroup;
+			children = (
+				B6AE8F07224E0F8A00F483BE /* AppDelegate.h */,
+				B6AE8F08224E0F8A00F483BE /* AppDelegate.m */,
+				B6AE8F10224E0F8B00F483BE /* Assets.xcassets */,
+				B6AE8F15224E0F8B00F483BE /* Info.plist */,
+				B6AF0DB12252538D000AB95C /* Launch.json */,
+				B6AE8F16224E0F8B00F483BE /* main.m */,
+				B6AE8F1D224E101800F483BE /* PrefixHeader.pch */,
+			);
+			path = UMP2PDemo;
+			sourceTree = "<group>";
+		};
+		DB4491CEF5948FA970BB1526 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				840922C8A7BD904D5ACA7C6D /* libPods-UMP2PDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		B6AE8F03224E0F8A00F483BE /* UMP2PDemo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = B6AE8F1A224E0F8B00F483BE /* Build configuration list for PBXNativeTarget "UMP2PDemo" */;
+			buildPhases = (
+				C2A50E2706650A91BB6437CB /* [CP] Check Pods Manifest.lock */,
+				B6AE8F00224E0F8A00F483BE /* Sources */,
+				B6AE8F01224E0F8A00F483BE /* Frameworks */,
+				B6AE8F02224E0F8A00F483BE /* Resources */,
+				603E825B56041E67D8B3E871 /* [CP] Copy Pods Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = UMP2PDemo;
+			productName = P2P_AEye3;
+			productReference = B6AE8F04224E0F8A00F483BE /* UMP2PDemo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		B6AE8EFC224E0F8A00F483BE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = UMEYE;
+				TargetAttributes = {
+					B6AE8F03224E0F8A00F483BE = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = B6AE8EFF224E0F8A00F483BE /* Build configuration list for PBXProject "UMP2PDemo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = B6AE8EFB224E0F8A00F483BE;
+			productRefGroup = B6AE8F05224E0F8A00F483BE /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				B6AE8F03224E0F8A00F483BE /* UMP2PDemo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		B6AE8F02224E0F8A00F483BE /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6AF0DB22252538D000AB95C /* Launch.json in Resources */,
+				B6AE8F11224E0F8B00F483BE /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		603E825B56041E67D8B3E871 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${SRCROOT}/Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources.sh",
+				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
+				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UMLaunchKit/UMLaunchKit.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PAccount/UMP2PAccount.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PApiClientLaunch/UMP2PApiClientLaunch.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PPushLaunch/UMP2PPushLaunch.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PVisual/UMP2PVisual.bundle",
+				"${PODS_CONFIGURATION_BUILD_DIR}/UMViewUtils/UMViewUtils.bundle",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMLaunchKit.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PAccount.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PApiClientLaunch.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PPushLaunch.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PVisual.bundle",
+				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMViewUtils.bundle",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		C2A50E2706650A91BB6437CB /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-UMP2PDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		B6AE8F00224E0F8A00F483BE /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				B6AE8F17224E0F8B00F483BE /* main.m in Sources */,
+				B6AE8F09224E0F8A00F483BE /* AppDelegate.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		B6AE8F18224E0F8B00F483BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		B6AE8F19224E0F8B00F483BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		B6AE8F1B224E0F8B00F483BE /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = C5C453870142A8D62E0EA086 /* Pods-UMP2PDemo.debug.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6F3GE5ULW8;
+				ENABLE_BITCODE = NO;
+				GCC_PREFIX_HEADER = "$(TARGET_NAME)/PrefixHeader.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/UMP2PDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.umeye.p2pdemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "UM Deve com.umeye.*";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Debug;
+		};
+		B6AE8F1C224E0F8B00F483BE /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = B7D63A972778783E2470107D /* Pods-UMP2PDemo.release.xcconfig */;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = 6F3GE5ULW8;
+				ENABLE_BITCODE = NO;
+				GCC_PREFIX_HEADER = "$(TARGET_NAME)/PrefixHeader.pch";
+				INFOPLIST_FILE = "$(SRCROOT)/UMP2PDemo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = com.umeye.p2pdemo;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "UM Deve com.umeye.*";
+				TARGETED_DEVICE_FAMILY = 1;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		B6AE8EFF224E0F8A00F483BE /* Build configuration list for PBXProject "UMP2PDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6AE8F18224E0F8B00F483BE /* Debug */,
+				B6AE8F19224E0F8B00F483BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B6AE8F1A224E0F8B00F483BE /* Build configuration list for PBXNativeTarget "UMP2PDemo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B6AE8F1B224E0F8B00F483BE /* Debug */,
+				B6AE8F1C224E0F8B00F483BE /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = B6AE8EFC224E0F8A00F483BE /* Project object */;
+}
