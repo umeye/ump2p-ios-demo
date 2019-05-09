@@ -26,6 +26,8 @@ static NSString *const kLauncherEnvPort = @"port";
 static NSString *const kLauncherEnvUMAccount = @"account";
 /// 是否使用推送功能
 static NSString *const kLauncherEnvPush = @"push";
+/// 是否支持HTTPS功能
+static NSString *const kLauncherEnvSSL = @"ssl";
 
 /// 默认数据
 NSString * const LauncherEnvHostDefaultValue = @"v0p2p.umeye.com";
@@ -51,6 +53,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     NSNumber *umAccount = [launchOptions valueForKey:kLauncherEnvUMAccount] ?: @(false);
     NSNumber *push = [launchOptions valueForKey:kLauncherEnvPush] ? : @(false);
     NSNumber *log = launchOptions[kLauncherEnvLogs][gEnviroment] ? : @(false);
+    NSNumber *ssl = launchOptions[kLauncherEnvSSL] ? : @(false);
     
     self.isUMAccount = [umAccount boolValue];
     int connType = self.isUMAccount ? 1 : 2;
@@ -59,6 +62,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     [UMWebClient shareClient].logDevEnable = logEnable;
     [UMWebClient shareClient].iConnType = connType;
     [UMWebClient shareClient].noLoginPushEnable = [push boolValue];
+    [UMWebClient shareClient].sslEnable = [ssl boolValue];
     [[UMWebClient shareClient] startSDK:host port:[port intValue] customFlag:appId];
     
     return TRUE;
