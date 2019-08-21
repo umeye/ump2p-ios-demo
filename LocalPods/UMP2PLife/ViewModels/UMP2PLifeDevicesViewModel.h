@@ -1,6 +1,6 @@
 //
-//  UMP2PAccountDevicesViewModel.h
-//  UMP2PAccount
+//  UMP2PLifeDevicesViewModel.h
+//  UMP2PLife
 //
 //  Created by fred on 2019/4/2.
 //
@@ -8,7 +8,7 @@
 #import <Foundation/Foundation.h>
 #import <UMViewUtils/UMViewUtils.h>
 
-@interface UMP2PAccountDevicesViewModel : NSObject <UMViewModelProtocol>
+@interface UMP2PLifeDevicesViewModel : NSObject <UMViewModelProtocol>
 @property (nonatomic, strong) NSMutableArray *datas;
 
 /// 父节点ID

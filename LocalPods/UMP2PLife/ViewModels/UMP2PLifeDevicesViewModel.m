@@ -1,16 +1,16 @@
 //
-//  UMP2PAccountDevicesViewModel.m
-//  UMP2PAccount
+//  UMP2PLifeDevicesViewModel.m
+//  UMP2PLife
 //
 //  Created by fred on 2019/4/2.
 //
 
-#import "UMP2PAccountDevicesViewModel.h"
+#import "UMP2PLifeDevicesViewModel.h"
 #import <UMP2P/CloudSDK.h>
-@interface UMP2PAccountDevicesViewModel()
+@interface UMP2PLifeDevicesViewModel()
 @property (nonatomic, strong) NSMutableArray *devices;
 @end
-@implementation UMP2PAccountDevicesViewModel
+@implementation UMP2PLifeDevicesViewModel
 
 - (instancetype)init{
     self = [super init];

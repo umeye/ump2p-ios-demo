@@ -64,3 +64,9 @@
 /// 富文本控件
 #import <SJAttributesFactory/SJAttributesFactory.h>
 
+
+// 账号系统相关通知
+#define UMLoginStateChangedNotificationKey  @"UMLoginStateChangedNotificationKey"
+#define kUMLoginExpiredNotification         @"kUMLoginExpiredNotification"
+#define UMLogoutNotificationKey             @"UMLogoutNotificationKey"
+

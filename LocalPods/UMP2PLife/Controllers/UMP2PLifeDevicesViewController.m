@@ -1,24 +1,24 @@
 //
-//  UMP2PAccountDevicesViewController.m
-//  UMP2PAccount
+//  UMP2PLifeDevicesViewController.m
+//  UMP2PLife
 //
 //  Created by fred on 2019/4/2.
 //
 
-#import "UMP2PAccountDevicesViewController.h"
-#import "UMP2PAccountDevicesViewModel.h"
+#import "UMP2PLifeDevicesViewController.h"
+#import "UMP2PLifeDevicesViewModel.h"
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <Masonry/Masonry.h>
 #import <MJRefresh/MJRefresh.h>
 #import <UMP2P/CloudSDK.h>
 #import <UMP2PVisual/UMP2PVisualLivePreiviewViewController.h>
-@interface UMP2PAccountDevicesViewController ()<UITableViewDelegate, UITableViewDataSource>
+@interface UMP2PLifeDevicesViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UMP2PAccountDevicesViewModel *viewModel;
+@property (nonatomic, strong) UMP2PLifeDevicesViewModel *viewModel;
 @end
 
-@implementation UMP2PAccountDevicesViewController
+@implementation UMP2PLifeDevicesViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -33,6 +33,10 @@
 - (void)createViewForConctroller{
     [self.view addSubview:self.tableView];
     [self.view setNeedsUpdateConstraints];
+}
+
+- (void)configNavigationForController{
+    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"注销" style:UIBarButtonItemStyleDone target:self action:@selector(doEventLogout)];
 }
 
 - (void)bindViewModelForController{
@@ -58,6 +62,7 @@
 
 
 #pragma mark -
+#pragma mark 下拉刷新设备列表
 - (void)headerRereshing{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         
@@ -68,9 +73,17 @@
         } error:^(NSError * _Nonnull error) {
             [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
             [self.tableView.mj_header endRefreshing];
+            
+            
         }];
     });
 }
+
+#pragma mark 注销账号
+- (void)doEventLogout{
+    [[NSNotificationCenter defaultCenter] postNotificationName:UMLogoutNotificationKey object:self];
+}
+
 #pragma mark -
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 1;
@@ -112,9 +125,9 @@
     return _tableView;
 }
 
-- (UMP2PAccountDevicesViewModel *)viewModel{
+- (UMP2PLifeDevicesViewModel *)viewModel{
     if (!_viewModel) {
-        _viewModel = [[UMP2PAccountDevicesViewModel alloc] init];
+        _viewModel = [[UMP2PLifeDevicesViewModel alloc] init];
     }
     return _viewModel;
         

@@ -10,7 +10,7 @@ target "UMP2PDemo" do
     # UM P2P SDK
     pod 'UMP2P'
     pod 'FFmpeg', '2.8.15'
-
+    
     # UM功能模块配置
     pod 'UMLaunchKit', :path => 'LocalPods/UMLaunchKit.podspec'
 
@@ -19,12 +19,14 @@ target "UMP2PDemo" do
 
     # UM SDK 配置
     pod 'UMP2PApiClientLaunch', :path => 'LocalPods/UMP2PApiClientLaunch.podspec'
-    # UM P2P 推送模块接口
-    pod 'UMP2PPushLaunch', :path => 'LocalPods/UMP2PPushLaunch.podspec'
     
-    # UM P2P 用户系统接口
+    # UM P2P 推送模块
+    pod 'UMP2PPushLaunch', :path => 'LocalPods/UMP2PPushLaunch.podspec'
+    # UM P2P 用户产品模块
+    pod 'UMP2PLife', :path => 'LocalPods/UMP2PLife.podspec'
+    # UM P2P 用户模块
     pod 'UMP2PAccount', :path => 'LocalPods/UMP2PAccount.podspec'
-    # UM P2P 视频播放系统接口
+    # UM P2P 视频播放模块
     pod 'UMP2PVisual', :path => 'LocalPods/UMP2PVisual.podspec'
 end
 
@@ -37,10 +39,4 @@ post_install do |installer|
         new_contents = text.gsub(string_to_replace, assets_compile_with_app_icon_arguments)
         File.open(copy_pods_resources_path, "w") {|file| file.puts new_contents }
     end
-    
-#    installer.pods_project.targets.each do |target|
-#        target.build_configurations.each do |config|
-#            config.build_settings['HEADER_SEARCH_PATHS'] = '${PODS_ROOT}/**'
-#        end
-#    end
 end

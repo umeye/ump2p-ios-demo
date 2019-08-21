@@ -26,10 +26,11 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
+    
     // 开始播放
     [self.viewModel setupDeviceConnData:self.playItem];
     [self.viewModel subscribeNext:^(id x) {
-        
     } error:^(NSError *error) {
         [SVProgressHUD showErrorWithStatus:error.localizedDescription];
     } api:0];
@@ -152,7 +153,7 @@
          */
         _playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
         //设备序列号
-        _playItem.sDeviceId = @"0059f67caf1b4a0f";
+        _playItem.sDeviceId = @"0059f67caf1b4a0f";//@"0059f67caf1b4a0f";
         //设备用户名
         _playItem.sUserId = @"admin";
         //设备密码

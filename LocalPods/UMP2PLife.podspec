@@ -1,5 +1,5 @@
 #
-# Be sure to run `pod lib lint UMP2PApiClientLaunch.podspec' to ensure this is a
+# Be sure to run `pod lib lint UMP2PLife.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
@@ -7,9 +7,9 @@
 #
 
 Pod::Spec.new do |s|
-  s.name             = 'UMP2PApiClientLaunch'
-  s.version          = '0.0.1'
-  s.summary          = 'A short description of UMP2PApiClientLaunch'
+  s.name             = 'UMP2PLife'
+  s.version          = '1.0.0'
+  s.summary          = 'A short description of UMP2PLife'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -29,18 +29,23 @@ TODO: Add long description of the pod here.
   LICENSE
   }
   s.author           = { '王伏' => 'fred@umeye.com' }
-  s.source           = { :git => 'fred@umeye.com:p2p-apiclient-launch-ios/#{s.name}.git', :tag => s.version.to_s }
+  s.source           = { :git => 'fred@umeye.com:p2p-life-ios/#{s.name}.git', :tag => s.version.to_s }
 
   s.ios.deployment_target = '8.0'
 
   s.source_files = "#{s.name}/**/*.{h,m}"
   s.resource_bundles = {
-    'UMP2PApiClientLaunch' => ["#{s.name}/**/*.{xib,storyboard,png,json,lproj,xcassets}"],
+    'UMP2PLife' => ["#{s.name}/**/*.{xib,storyboard,png,json,lproj,xcassets}"],
   }
-
-  s.frameworks = 'UIKit'
   s.xcconfig = {    'OTHER_LDFLAGS' => '-ObjC'}
   
+  s.frameworks = 'UIKit'
+
+  s.dependency 'Masonry'
+  # 提示组件框架
+  s.dependency 'SVProgressHUD'
   s.dependency 'UMP2P'
-  s.dependency 'UMLog'
+  s.prefix_header_contents = <<-EOS
+  #import "UMP2PLifeMacros.h"
+  EOS
 end

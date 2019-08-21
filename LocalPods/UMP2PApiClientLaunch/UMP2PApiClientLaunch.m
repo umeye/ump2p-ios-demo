@@ -9,7 +9,9 @@
 #import "UMP2PApiClientLaunch.h"
 #import <UMLaunchKit/UMLaunchKit.h>
 #import <UMP2P/CloudSDK.h>
+#import <UMLog/UMLog.h>
 /// UMP2P 用户系统
+#import <UMP2PLife/UMP2PLifeDevicesViewController.h>
 #import <UMP2PAccount/UMP2PAccountLoginViewController.h>
 /// UMP2P 视频播放系统
 #import <UMP2PVisual/UMP2PVisualLivePreiviewViewController.h>
@@ -34,6 +36,10 @@ NSString * const LauncherEnvHostDefaultValue = @"v0p2p.umeye.com";
 NSString * const LauncherEnvPortDefaultValue = @"8888";
 NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 
+// 账号系统相关通知
+#define UMLoginStateChangedNotificationKey  @"UMLoginStateChangedNotificationKey"
+#define UMLogoutNotificationKey             @"UMLogoutNotificationKey"
+
 @interface UMP2PApiClientLaunch ()<UMLauncherProtocol>
 @property (nonatomic, strong) UIViewController *viewController;
 
@@ -44,6 +50,8 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 @implementation UMP2PApiClientLaunch
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
+    
+    
     NSDictionary *envConfig = [launchOptions valueForKey:kLauncherEnvConfigKey];
     NSString *gEnviroment = [envConfig valueForKey:kLauncherEnvBuildConfig] ? : LauncherEnvBuildConfigDefaultValue;
     
@@ -58,13 +66,15 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     self.isUMAccount = [umAccount boolValue];
     int connType = self.isUMAccount ? 1 : 2;
     BOOL logEnable = [log boolValue];
-    [UMWebClient shareClient].logEnable = logEnable;
-    [UMWebClient shareClient].logDevEnable = logEnable;
+
+    UMAccountBuilder *builder = [UMAccountBuilder builder];
+    builder.logEnable = logEnable;
+    builder.pushEnable = [push boolValue];
+    builder.sslEnable = [ssl boolValue];
+    [UMWebClient setup:builder];
     [UMWebClient shareClient].iConnType = connType;
-    [UMWebClient shareClient].noLoginPushEnable = [push boolValue];
-    [UMWebClient shareClient].sslEnable = [ssl boolValue];
     [[UMWebClient shareClient] startSDK:host port:[port intValue] customFlag:appId];
-    
+    [self createLoginNotification];
     return TRUE;
 }
 
@@ -98,17 +108,43 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 }
 
 #pragma mark - Property
+
+- (void)createLoginNotification{
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushLoginNotification:) name:UMLoginStateChangedNotificationKey object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginExpiredNotification:) name:kUMLoginExpiredNotification object:nil];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:UMLogoutNotificationKey object:nil];
+    ULogD(@"创建Login通知监听");
+}
+
+- (void)pushLoginNotification:(NSNotification *)noti{
+    UIViewController *vc = [noti object];
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[UMP2PAccountLoginViewController new]];
+    [vc presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)loginExpiredNotification:(NSNotification *)noti{
+    UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[UMP2PAccountLoginViewController new]];
+    [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:navController animated:YES completion:nil];
+}
+
+- (void)logoutNotification:(NSNotification *)noti{
+    [[UMWebClient shareClient] logoutServer:YES];
+    [self pushLoginNotification:noti];
+}
+
 /// 如果不需要UM用户系统，直接进入播放界面
 - (UIViewController *)viewControllerAtLogin:(BOOL)aLogin{
     if (!_viewController) {
         if (aLogin) {
-            _viewController = [[UMP2PAccountLoginViewController alloc] init];
+            _viewController = [[UMP2PLifeDevicesViewController alloc] init];
         }else{
             _viewController = [[UMP2PVisualLivePreiviewViewController alloc] init];
         }
-        
     }
     return _viewController;
 }
+
 
 @end

@@ -101,6 +101,7 @@
 				B6AE8F01224E0F8A00F483BE /* Frameworks */,
 				B6AE8F02224E0F8A00F483BE /* Resources */,
 				603E825B56041E67D8B3E871 /* [CP] Copy Pods Resources */,
+				854D56540A3933877F3FD6CD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -162,34 +163,32 @@
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${SRCROOT}/Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources.sh",
-				"${PODS_ROOT}/MJRefresh/MJRefresh/MJRefresh.bundle",
-				"${PODS_ROOT}/SVProgressHUD/SVProgressHUD/SVProgressHUD.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UMLaunchKit/UMLaunchKit.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PAccount/UMP2PAccount.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PApiClientLaunch/UMP2PApiClientLaunch.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PPushLaunch/UMP2PPushLaunch.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UMP2PVisual/UMP2PVisual.bundle",
-				"${PODS_CONFIGURATION_BUILD_DIR}/UMViewUtils/UMViewUtils.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-			);
-			outputPaths = (
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/MJRefresh.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/SVProgressHUD.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMLaunchKit.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PAccount.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PApiClientLaunch.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PPushLaunch.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMP2PVisual.bundle",
-				"${TARGET_BUILD_DIR}/${UNLOCALIZED_RESOURCES_FOLDER_PATH}/UMViewUtils.bundle",
+				"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		854D56540A3933877F3FD6CD /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C2A50E2706650A91BB6437CB /* [CP] Check Pods Manifest.lock */ = {
