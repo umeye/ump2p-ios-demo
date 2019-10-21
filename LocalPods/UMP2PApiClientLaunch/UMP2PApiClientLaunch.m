@@ -64,7 +64,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     NSNumber *ssl = launchOptions[kLauncherEnvSSL] ? : @(false);
     
     self.isUMAccount = [umAccount boolValue];
-    int connType = self.isUMAccount ? 1 : 2;
+    int connType = self.isUMAccount ? UM_WEB_API_CONN_TYPE_LOGIN : UM_WEB_API_CONN_TYPE_LOCAL;
     BOOL logEnable = [log boolValue];
 
     UMAccountBuilder *builder = [UMAccountBuilder builder];
@@ -77,7 +77,6 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     [self createLoginNotification];
     return TRUE;
 }
-
 
 - (void)applicationDidEnterBackground:(UIApplication *)application{
     
@@ -121,11 +120,13 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 - (void)pushLoginNotification:(NSNotification *)noti{
     UIViewController *vc = [noti object];
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[UMP2PAccountLoginViewController new]];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     [vc presentViewController:navController animated:YES completion:nil];
 }
 
 - (void)loginExpiredNotification:(NSNotification *)noti{
     UINavigationController *navController = [[UINavigationController alloc] initWithRootViewController:[UMP2PAccountLoginViewController new]];
+    navController.modalPresentationStyle = UIModalPresentationFullScreen;
     [[UIApplication sharedApplication].keyWindow.rootViewController presentViewController:navController animated:YES completion:nil];
 }
 
