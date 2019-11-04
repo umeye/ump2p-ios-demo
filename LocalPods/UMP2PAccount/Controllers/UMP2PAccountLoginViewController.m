@@ -41,7 +41,7 @@
 
 - (void)updateViewConstraints{
     [self.mView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(self.view).insets(UIEdgeInsetsMake(0, 0, 0, 0));
+        make.left.right.top.bottom.mas_equalTo(0);
     }];
     [super updateViewConstraints];
 }
