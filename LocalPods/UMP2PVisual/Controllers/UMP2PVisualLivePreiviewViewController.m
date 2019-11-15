@@ -153,7 +153,7 @@
          */
         _playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
         //设备序列号
-        _playItem.sDeviceId = @"0059f67caf1b4a0f";//@"0059f67caf1b4a0f";
+        _playItem.sDeviceId = @"umks64rp7srj";//@"0059f67caf1b4a0f"  e528c2b5944f502c;
         //设备用户名
         _playItem.sUserId = @"admin";
         //设备密码

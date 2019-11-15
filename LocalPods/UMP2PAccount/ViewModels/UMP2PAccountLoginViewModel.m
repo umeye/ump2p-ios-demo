@@ -20,6 +20,11 @@
 - (void)subscribeNext:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock api:(int)api param:(NSDictionary *)param{
     if (api == 0) {
         [self login:nextBlock error:errorBlock];
+    }else if (api == 1) {
+        [self forgotPassword:nextBlock error:errorBlock];
+    }
+    else if (api == 2) {
+        [self pushSMS:nextBlock error:errorBlock];
     }
 }
 
@@ -52,6 +57,55 @@
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
         [[UMWebClient shareClient] loginServerAtUserId:self.userId password:self.userPwd];
+    });
+}
+
+
+- (void)forgotPassword:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    
+    if (self.userId.length == 0) {
+        NSString *sError = @"用户名不能为空,请重新输入";
+        NSError *err = [NSError errorWithDomain:@"" code:-1 userInfo:@{NSLocalizedDescriptionKey : sError}];
+        errorBlock(err);
+        return;
+    }
+    [[UMWebClient shareClient] setDataTask:^(int iMsgId, int iError, id aParam) {
+        if (iMsgId == UM_WEB_API_WS_HEAD_I_USER_RESETPWD) {
+            if (iError == UM_WEB_API_ERROR_ID_SUC) {
+                nextBlock(aParam);
+            }else{
+                NSString *sError = [NSString stringWithFormat:@"请求错误，错误码[%d]", iError];
+                NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+                errorBlock(err);
+            }
+        }
+    }];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [[UMWebClient shareClient] resetUserPassword:self.userId];
+    });
+}
+
+- (void)pushSMS:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    
+    if (self.userId.length == 0) {
+        NSString *sError = @"用户名不能为空,请重新输入";
+        NSError *err = [NSError errorWithDomain:@"" code:-1 userInfo:@{NSLocalizedDescriptionKey : sError}];
+        errorBlock(err);
+        return;
+    }
+    [[UMWebClient shareClient] setDataTask:^(int iMsgId, int iError, id aParam) {
+        if (iMsgId == UM_WEB_API_WS_HEAD_I_PUSH_SMS) {
+            if (iError == UM_WEB_API_ERROR_ID_SUC) {
+                nextBlock(aParam);
+            }else{
+                NSString *sError = [NSString stringWithFormat:@"请求错误，错误码[%d]", iError];
+                NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+                errorBlock(err);
+            }
+        }
+    }];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        [[UMWebClient shareClient] pushPhoneSMS:self.userId areaCode:@"86" type:1];
     });
 }
 

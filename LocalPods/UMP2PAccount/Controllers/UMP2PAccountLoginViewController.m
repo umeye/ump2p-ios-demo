@@ -36,6 +36,9 @@
 /// 绑定 vm
 - (void)bindViewModelForController{
     [self.mView.loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+    [self.mView.forgotBtn addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
+    [self.mView.smsBtn addTarget:self action:@selector(pushSMS) forControlEvents:UIControlEventTouchUpInside];
+    
     [self.mView bindViewModel:self.viewModel withParams:nil];
 }
 
@@ -56,6 +59,26 @@
     } error:^(NSError *error) {
         [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
     } api:0];
+    
+}
+
+- (void)forgotPassword{
+    [SVProgressHUD show];
+    [self.viewModel subscribeNext:^(id x) {
+        [SVProgressHUD um_displaySuccessWithStatus:@"找回密码成功"];
+    } error:^(NSError *error) {
+        [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
+    } api:1];
+    
+}
+
+- (void)pushSMS{
+    [SVProgressHUD show];
+    [self.viewModel subscribeNext:^(id x) {
+        [SVProgressHUD um_displaySuccessWithStatus:@"请求短信成功"];
+    } error:^(NSError *error) {
+        [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
+    } api:2];
     
 }
 #pragma mark -

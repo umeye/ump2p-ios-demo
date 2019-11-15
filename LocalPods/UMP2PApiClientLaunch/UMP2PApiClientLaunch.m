@@ -69,6 +69,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 
     UMAccountBuilder *builder = [UMAccountBuilder builder];
     builder.logEnable = logEnable;
+    builder.logDevEnable = logEnable;
     builder.pushEnable = [push boolValue];
     builder.sslEnable = [ssl boolValue];
     [UMWebClient setup:builder];

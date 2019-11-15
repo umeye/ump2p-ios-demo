@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -101,7 +101,6 @@
 				B6AE8F01224E0F8A00F483BE /* Frameworks */,
 				B6AE8F02224E0F8A00F483BE /* Resources */,
 				603E825B56041E67D8B3E871 /* [CP] Copy Pods Resources */,
-				854D56540A3933877F3FD6CD /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -172,23 +171,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-resources.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		854D56540A3933877F3FD6CD /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		C2A50E2706650A91BB6437CB /* [CP] Check Pods Manifest.lock */ = {

@@ -28,6 +28,8 @@
     [self addSubview:self.userIdTextField];
     [self addSubview:self.userPwdTextField];
     [self addSubview:self.loginBtn];
+    [self addSubview:self.forgotBtn];
+    [self addSubview:self.smsBtn];
 }
 
 - (void)updateConstraints{
@@ -46,6 +48,15 @@
     [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
        make.top.mas_equalTo(self.userPwdTextField.mas_bottom).offset(20);
         make.left.right.height.mas_equalTo(self.userIdTextField);
+    }];
+    
+    [self.forgotBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+       make.top.mas_equalTo(self.loginBtn.mas_bottom).offset(20);
+        make.left.right.height.mas_equalTo(self.loginBtn);
+    }];
+    [self.smsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+       make.top.mas_equalTo(self.forgotBtn.mas_bottom).offset(20);
+        make.left.right.height.mas_equalTo(self.loginBtn);
     }];
     [super updateConstraints];
 }
@@ -84,12 +95,37 @@
 - (UIButton *)loginBtn{
     if (!_loginBtn) {
         _loginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [_loginBtn setTitle:@"Login" forState:UIControlStateNormal];
+        [_loginBtn setTitle:@"登录" forState:UIControlStateNormal];
         [_loginBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_loginBtn setBackgroundColor:[UIColor lightGrayColor]];
         _loginBtn.layer.masksToBounds = YES;
         _loginBtn.layer.cornerRadius = 5;
     }
     return _loginBtn;
+}
+
+
+- (UIButton *)forgotBtn{
+    if (!_forgotBtn) {
+        _forgotBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_forgotBtn setTitle:@"忘记密码" forState:UIControlStateNormal];
+        [_forgotBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_forgotBtn setBackgroundColor:[UIColor lightGrayColor]];
+        _forgotBtn.layer.masksToBounds = YES;
+        _forgotBtn.layer.cornerRadius = 5;
+    }
+    return _forgotBtn;
+}
+
+- (UIButton *)smsBtn{
+    if (!_smsBtn) {
+        _smsBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_smsBtn setTitle:@"请求验证码" forState:UIControlStateNormal];
+        [_smsBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_smsBtn setBackgroundColor:[UIColor lightGrayColor]];
+        _smsBtn.layer.masksToBounds = YES;
+        _smsBtn.layer.cornerRadius = 5;
+    }
+    return _smsBtn;
 }
 @end

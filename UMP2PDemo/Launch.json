@@ -18,7 +18,7 @@
                 "release": false
             },
             "port": "8888",
-            "appId": "2000000001",
+            "appId": "20000001",
             "account": true,
             "ssl": false,
             "push": true
