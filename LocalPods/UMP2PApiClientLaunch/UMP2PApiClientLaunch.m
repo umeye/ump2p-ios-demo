@@ -64,16 +64,15 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     NSNumber *ssl = launchOptions[kLauncherEnvSSL] ? : @(false);
     
     self.isUMAccount = [umAccount boolValue];
-    int connType = self.isUMAccount ? UM_WEB_API_CONN_TYPE_LOGIN : UM_WEB_API_CONN_TYPE_LOCAL;
     BOOL logEnable = [log boolValue];
 
-    UMAccountBuilder *builder = [UMAccountBuilder builder];
+    UMConfig *builder = [UMConfig builder];
     builder.logEnable = logEnable;
     builder.logDevEnable = logEnable;
     builder.pushEnable = [push boolValue];
     builder.sslEnable = [ssl boolValue];
+    builder.accountEnable = [umAccount boolValue];
     [UMWebClient setup:builder];
-    [UMWebClient shareClient].iConnType = connType;
     [[UMWebClient shareClient] startSDK:host port:[port intValue] customFlag:appId];
     [self createLoginNotification];
     return TRUE;
@@ -108,7 +107,6 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 }
 
 #pragma mark - Property
-
 - (void)createLoginNotification{
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushLoginNotification:) name:UMLoginStateChangedNotificationKey object:nil];
     

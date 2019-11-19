@@ -17,10 +17,10 @@
                 "pre": false,
                 "release": false
             },
-            "port": "8888",
+            "port": "8443",
             "appId": "20000001",
             "account": true,
-            "ssl": false,
+            "ssl": true,
             "push": true
         }
     },
