@@ -54,6 +54,14 @@ static NSString *const kLauncherEnvAppSecret = @"appSecret";
 #pragma mark - GTSDK Delegate
 - (void)GeTuiSdkDidReceivePayloadData:(NSData *)payloadData andTaskId:(NSString *)taskId andMsgId:(NSString *)msgId andOffLine:(BOOL)offLine fromGtAppId:(NSString *)appId {
     // 收到消息推送回调
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:payloadData options:0 error:NULL];
+    if (!json) {
+        NSString *s = [[NSString alloc] initWithData:payloadData encoding:NSUTF8StringEncoding];
+        json = @{@"msg":s};
+    }
+    // 控制台打印日志
+    NSString *msg = [NSString stringWithFormat:@"taskId=%@,messageId:%@,payloadMsg:%@%@", taskId, msgId, json, offLine ? @"<离线消息>" : @""];
+    NSLog(@"\n>>[GTSdk ReceivePayload]:%@", msg);
     
 }
 /** SDK启动成功返回cid */
