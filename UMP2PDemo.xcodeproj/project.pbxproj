@@ -24,6 +24,7 @@
 		B6AE8F16224E0F8B00F483BE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		B6AE8F1D224E101800F483BE /* PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PrefixHeader.pch; sourceTree = "<group>"; };
 		B6AF0DB12252538D000AB95C /* Launch.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = Launch.json; sourceTree = "<group>"; };
+		B6F511D323840B61000ED5DA /* UMP2PDemo.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = UMP2PDemo.entitlements; sourceTree = "<group>"; };
 		B7D63A972778783E2470107D /* Pods-UMP2PDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UMP2PDemo.release.xcconfig"; path = "Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo.release.xcconfig"; sourceTree = "<group>"; };
 		C5C453870142A8D62E0EA086 /* Pods-UMP2PDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-UMP2PDemo.debug.xcconfig"; path = "Pods/Target Support Files/Pods-UMP2PDemo/Pods-UMP2PDemo.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -70,6 +71,7 @@
 		B6AE8F06224E0F8A00F483BE /* UMP2PDemo */ = {
 			isa = PBXGroup;
 			children = (
+				B6F511D323840B61000ED5DA /* UMP2PDemo.entitlements */,
 				B6AE8F07224E0F8A00F483BE /* AppDelegate.h */,
 				B6AE8F08224E0F8A00F483BE /* AppDelegate.m */,
 				B6AE8F10224E0F8B00F483BE /* Assets.xcassets */,
@@ -328,6 +330,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = UMP2PDemo/UMP2PDemo.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 6F3GE5ULW8;
 				ENABLE_BITCODE = NO;
@@ -351,6 +354,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_LAUNCHIMAGE_NAME = LaunchImage;
+				CODE_SIGN_ENTITLEMENTS = UMP2PDemo/UMP2PDemo.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				DEVELOPMENT_TEAM = 6F3GE5ULW8;
 				ENABLE_BITCODE = NO;

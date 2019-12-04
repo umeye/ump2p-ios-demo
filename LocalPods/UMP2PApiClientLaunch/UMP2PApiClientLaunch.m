@@ -36,8 +36,6 @@ NSString * const LauncherEnvHostDefaultValue = @"v0p2p.umeye.com";
 NSString * const LauncherEnvPortDefaultValue = @"8888";
 NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 
-// 账号系统相关通知
-#define UMLoginStateChangedNotificationKey  @"UMLoginStateChangedNotificationKey"
 #define UMLogoutNotificationKey             @"UMLogoutNotificationKey"
 
 @interface UMP2PApiClientLaunch ()<UMLauncherProtocol>
@@ -67,13 +65,23 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     BOOL logEnable = [log boolValue];
 
     UMConfig *builder = [UMConfig builder];
+    // 是否启用LOG
     builder.logEnable = logEnable;
     builder.logDevEnable = logEnable;
+    // 是否需要免登录推送
     builder.pushEnable = [push boolValue];
+    // 是否启动SSL
     builder.sslEnable = [ssl boolValue];
+    //是否为登录模式
+    //YES：使用SDK自带的登录体系，
+    //NO：不需要SDK登录体系，使用UID、用户名、密码直接访问设备
     builder.accountEnable = [umAccount boolValue];
-    [UMWebClient setup:builder];
-    [[UMWebClient shareClient] startSDK:host port:[port intValue] customFlag:appId];
+    // 启动异步请求
+    builder.asyncEnable = YES;
+    // 启动SDK
+    [UMConfig startSDK:appId];
+    
+    
     [self createLoginNotification];
     return TRUE;
 }
@@ -108,10 +116,10 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 
 #pragma mark - Property
 - (void)createLoginNotification{
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(pushLoginNotification:) name:UMLoginStateChangedNotificationKey object:nil];
-    
+    // 用户过期以后，SDK发起的通知
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(loginExpiredNotification:) name:kUMLoginExpiredNotification object:nil];
     
+    // demo自定义通知，登出事件
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:UMLogoutNotificationKey object:nil];
     ULogD(@"创建Login通知监听");
 }

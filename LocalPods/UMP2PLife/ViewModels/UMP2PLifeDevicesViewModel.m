@@ -31,23 +31,47 @@
 - (void)subscribeNext:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock api:(int)api param:(NSDictionary *)param{
     if (api == 0) {
         [self devices:nextBlock error:errorBlock];
+    }else if (api == 1) {
+        [self refreshSessionID:nextBlock error:errorBlock];
     }
 }
-- (void)devices:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [self.devices removeAllObjects];
-        UM_WEB_API_ERROR_ID iError = [[UMWebClient shareClient] nodeList:self.devices];
-        dispatch_async(dispatch_get_main_queue(), ^{
+
+/// 刷新session
+- (void)refreshSessionID:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    [[UMWebClient shareClient] setDataTask:^(int iMsgId, int iError, id aParam) {
+        if (iMsgId == UM_WEB_API_WS_HEAD_I_LOGIN_SESSION) {
             if (iError == UM_WEB_API_ERROR_ID_SUC) {
-                [self updateDatas];
-                nextBlock(@{});
+                // 获取成功
+                nextBlock(aParam);
             }else{
+                // 失败
                 NSString *sError = [NSString stringWithFormat:@"请求错误，错误码[%d]", iError];
                 NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
                 errorBlock(err);
             }
-        });
-    });
+        }
+    }];
+    [[UMWebClient shareClient] refreshSessionID];
+}
+
+/// 获取设备列表
+- (void)devices:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    [[UMWebClient shareClient] setDataTask:^(int iMsgId, int iError, id aParam) {
+        if (iMsgId == UM_WEB_API_WS_HEAD_I_DEVICE_QUERY) {
+            if (iError == UM_WEB_API_ERROR_ID_SUC) {
+                self.devices = aParam;
+                // 获取成功
+                [self updateDatas];
+                nextBlock(aParam);
+            }else{
+                // 失败
+                NSString *sError = [NSString stringWithFormat:@"请求错误，错误码[%d]", iError];
+                NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+                errorBlock(err);
+            }
+        }
+    }];
+    [[UMWebClient shareClient] nodeList];
 }
 
 - (void)updateDatas{

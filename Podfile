@@ -9,8 +9,8 @@ target "UMP2PDemo" do
     # App 依赖
     # UM P2P SDK
     pod 'UMP2P'
-    pod 'FFmpeg', '2.8.15'
-    
+#    pod 'UMP2P', :path => 'LocalPods/UMP2P.podspec'
+
     # UM功能模块配置
     pod 'UMLaunchKit', :path => 'LocalPods/UMLaunchKit.podspec'
 

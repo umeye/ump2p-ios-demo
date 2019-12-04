@@ -16,6 +16,7 @@
 @interface UMP2PLifeDevicesViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UMP2PLifeDevicesViewModel *viewModel;
+@property (nonatomic, assign) BOOL isGetData;
 @end
 
 @implementation UMP2PLifeDevicesViewController
@@ -27,7 +28,10 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self.tableView.mj_header beginRefreshing];
+    if (self.isGetData) {
+        [self.tableView.mj_header beginRefreshing];
+    }
+    self.isGetData = YES;
 }
 
 - (void)createViewForConctroller{
@@ -35,6 +39,9 @@
     [self.view setNeedsUpdateConstraints];
 }
 
+- (void)initialDefaultsForController{
+    self.isGetData = NO;
+}
 - (void)configNavigationForController{
     self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"注销" style:UIBarButtonItemStyleDone target:self action:@selector(doEventLogout)];
 }
@@ -52,6 +59,18 @@
         [self.tableView reloadData];
     }];
     
+    // 刷新session
+    [SVProgressHUD show];
+    [self.viewModel subscribeNext:^(id  _Nonnull x) {
+        [self.viewModel subscribeNext:^(id  _Nonnull x) {
+            [SVProgressHUD dismiss];
+            [self.tableView reloadData];
+        } error:^(NSError * _Nonnull error) {
+            [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
+        }];
+    } error:^(NSError * _Nonnull error) {
+        [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
+    } api:1];
 }
 - (void)updateViewConstraints{
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -60,12 +79,10 @@
     [super updateViewConstraints];
 }
 
-
 #pragma mark -
 #pragma mark 下拉刷新设备列表
 - (void)headerRereshing{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-        
         [self.viewModel subscribeNext:^(id  _Nonnull x) {
             [self.tableView.mj_header endRefreshing];
             [self.tableView reloadData];
@@ -73,8 +90,6 @@
         } error:^(NSError * _Nonnull error) {
             [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
             [self.tableView.mj_header endRefreshing];
-            
-            
         }];
     });
 }
