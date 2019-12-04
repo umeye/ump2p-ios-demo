@@ -49,7 +49,6 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     
-    
     NSDictionary *envConfig = [launchOptions valueForKey:kLauncherEnvConfigKey];
     NSString *gEnviroment = [envConfig valueForKey:kLauncherEnvBuildConfig] ? : LauncherEnvBuildConfigDefaultValue;
     
@@ -72,6 +71,8 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     builder.pushEnable = [push boolValue];
     // 是否启动SSL
     builder.sslEnable = [ssl boolValue];
+    builder.host = host;
+    builder.port = [port intValue];
     //是否为登录模式
     //YES：使用SDK自带的登录体系，
     //NO：不需要SDK登录体系，使用UID、用户名、密码直接访问设备
@@ -80,7 +81,6 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     builder.asyncEnable = YES;
     // 启动SDK
     [UMConfig startSDK:appId];
-    
     
     [self createLoginNotification];
     return TRUE;
