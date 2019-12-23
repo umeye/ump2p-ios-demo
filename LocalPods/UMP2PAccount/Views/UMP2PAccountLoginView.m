@@ -28,8 +28,9 @@
     [self addSubview:self.userIdTextField];
     [self addSubview:self.userPwdTextField];
     [self addSubview:self.loginBtn];
-    [self addSubview:self.forgotBtn];
-    [self addSubview:self.smsBtn];
+//    [self addSubview:self.forgotBtn];
+//    [self addSubview:self.smsBtn];
+    [self addSubview:self.registerBtn];
 }
 
 - (void)updateConstraints{
@@ -50,12 +51,16 @@
         make.left.right.height.mas_equalTo(self.userIdTextField);
     }];
     
-    [self.forgotBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//    [self.forgotBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//       make.top.mas_equalTo(self.loginBtn.mas_bottom).offset(20);
+//        make.left.right.height.mas_equalTo(self.loginBtn);
+//    }];
+//    [self.smsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+//       make.top.mas_equalTo(self.forgotBtn.mas_bottom).offset(20);
+//        make.left.right.height.mas_equalTo(self.loginBtn);
+//    }];
+    [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
        make.top.mas_equalTo(self.loginBtn.mas_bottom).offset(20);
-        make.left.right.height.mas_equalTo(self.loginBtn);
-    }];
-    [self.smsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-       make.top.mas_equalTo(self.forgotBtn.mas_bottom).offset(20);
         make.left.right.height.mas_equalTo(self.loginBtn);
     }];
     [super updateConstraints];
@@ -127,5 +132,17 @@
         _smsBtn.layer.cornerRadius = 5;
     }
     return _smsBtn;
+}
+
+- (UIButton *)registerBtn{
+    if (!_registerBtn) {
+        _registerBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_registerBtn setTitle:@"注册" forState:UIControlStateNormal];
+        [_registerBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_registerBtn setBackgroundColor:[UIColor lightGrayColor]];
+        _registerBtn.layer.masksToBounds = YES;
+        _registerBtn.layer.cornerRadius = 5;
+    }
+    return _registerBtn;
 }
 @end

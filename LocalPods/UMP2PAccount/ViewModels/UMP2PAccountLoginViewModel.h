@@ -6,8 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UMViewUtils/UMViewUtils.h>
-
 @interface UMP2PAccountLoginViewModel : NSObject <UMViewModelProtocol>
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userPwd;

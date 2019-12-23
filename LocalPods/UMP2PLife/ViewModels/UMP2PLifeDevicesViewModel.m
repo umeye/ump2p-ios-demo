@@ -34,6 +34,11 @@
     }else if (api == 1) {
         [self refreshSessionID:nextBlock error:errorBlock];
     }
+    else if (api == 2) {
+        /// 查询设备的分享用户列表
+        [self shareDevUsers:nextBlock error:errorBlock];
+    }
+    
 }
 
 /// 刷新session
@@ -52,6 +57,28 @@
         }
     }];
     [[UMWebClient shareClient] refreshSessionID];
+}
+
+/// 查询设备的分享用户列表
+- (void)shareDevUsers:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    [[UMWebClient shareClient] setDataTask:^(int iMsgId, int iError, id aParam) {
+        if (iMsgId == UM_WEB_API_WS_HEAD_I_DEVICE_SHARE_USERS) {
+            if (iError == UM_WEB_API_ERROR_ID_SUC) {
+                // 获取成功
+                nextBlock(aParam);
+            }else{
+                // 失败
+                NSString *sError = [NSString stringWithFormat:@"请求错误，错误码[%d]", iError];
+                NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+                errorBlock(err);
+            }
+        }
+    }];
+    
+    // 提取一个做测试数据
+    TreeListItem *item = self.datas.firstObject;
+    
+    [[UMWebClient shareClient] sharkUserList:item];
 }
 
 /// 获取设备列表

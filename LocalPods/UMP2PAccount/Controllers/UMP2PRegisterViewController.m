@@ -1,22 +1,26 @@
 //
-//  UMP2PAccountLoginViewController
-//  UMP2PAccount
+//  UMP2PRegisterViewController.m
+//  UMP2PVisual
 //
-//  Created by Fred on 2019/3/15.
+//  Created by fred on 2019/12/23.
 //
-#import "UMP2PAccountLoginViewController.h"
-#import "UMP2PAccountLoginView.h"
-#import "UMP2PAccountLoginViewModel.h"
+
 #import "UMP2PRegisterViewController.h"
-
-#import <SVProgressHUD/SVProgressHUD.h>
+#import "UMP2PRegisterView.h"
+#import "UMP2PRegisterViewModel.h"
 #import <Masonry/Masonry.h>
-@interface UMP2PAccountLoginViewController()
 
-@property (nonatomic, strong) UMP2PAccountLoginView *mView;
-@property (nonatomic, strong) UMP2PAccountLoginViewModel *viewModel;
+@interface UMP2PRegisterViewController ()
+@property (nonatomic, strong) UMP2PRegisterView *mView;
+@property (nonatomic, strong) UMP2PRegisterViewModel *viewModel;
 @end
-@implementation UMP2PAccountLoginViewController
+
+@implementation UMP2PRegisterViewController
+
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    // Do any additional setup after loading the view.
+}
 
 /// 初始化数据
 - (void)initialDefaultsForController{
@@ -36,10 +40,10 @@
 
 /// 绑定 vm
 - (void)bindViewModelForController{
-    [self.mView.loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
-    [self.mView.forgotBtn addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
-    [self.mView.smsBtn addTarget:self action:@selector(pushSMS) forControlEvents:UIControlEventTouchUpInside];
-    [self.mView.registerBtn addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.mView.sendCodeBtn addTarget:self action:@selector(sendCode) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.mView.okBtn addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
     
     [self.mView bindViewModel:self.viewModel withParams:nil];
 }
@@ -51,30 +55,16 @@
     [super updateViewConstraints];
 }
 
-#pragma mark -
-- (void)login{
+- (void)registerUser{
     [SVProgressHUD show];
     [self.viewModel subscribeNext:^(id x) {
-        [SVProgressHUD um_displaySuccessWithStatus:@"登录成功"];
-        // 进入设备列表界面
-        [self.navigationController dismissViewControllerAnimated:YES completion:nil];
+        [SVProgressHUD um_displaySuccessWithStatus:@"请求注册成功"];
     } error:^(NSError *error) {
         [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
-    } api:UMHAPICmdLogin];
-    
+    } api:UMHAPICmdRegist];
 }
 
-- (void)forgotPassword{
-    [SVProgressHUD show];
-    [self.viewModel subscribeNext:^(id x) {
-        [SVProgressHUD um_displaySuccessWithStatus:@"找回密码成功"];
-    } error:^(NSError *error) {
-        [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
-    } api:UMHAPICmdFindPwd];
-    
-}
-
-- (void)pushSMS{
+- (void)sendCode{
     
     UIAlertController *ac = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
     UIAlertAction *actionPush = [UIAlertAction actionWithTitle:@"请求短信验证码" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
@@ -103,22 +93,17 @@
     [self presentViewController:ac animated:YES completion:nil];
 }
 
-- (void)registerUser{
-    UMP2PRegisterViewController *vc = [[UMP2PRegisterViewController alloc] init];
-    [self.navigationController pushViewController:vc animated:YES];
-    
-}
 #pragma mark -
-- (UMP2PAccountLoginView *)mView{
+- (UMP2PRegisterView *)mView{
     if (!_mView) {
-        _mView = [[UMP2PAccountLoginView alloc] init];
+        _mView = [[UMP2PRegisterView alloc] init];
     }
     return _mView;
 }
 
-- (UMP2PAccountLoginViewModel *)viewModel{
+- (UMP2PRegisterViewModel *)viewModel{
     if (!_viewModel) {
-        _viewModel = [[UMP2PAccountLoginViewModel alloc] init];
+        _viewModel = [[UMP2PRegisterViewModel alloc] init];
     }
     return _viewModel;
 }

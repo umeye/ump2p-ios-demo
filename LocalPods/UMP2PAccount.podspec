@@ -45,4 +45,8 @@ TODO: Add long description of the pod here.
   s.dependency 'SVProgressHUD'
   s.dependency 'UMP2P'
   s.dependency 'MJRefresh'
+  
+  s.prefix_header_contents = <<-EOS
+  #import "UMP2PAccountUtils.h"
+  EOS
 end

@@ -6,7 +6,6 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <UMViewUtils/UMViewUtils.h>
 
 @interface UMP2PAccountLoginView : UIView <UMViewProtocol>
 
