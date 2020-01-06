@@ -1,16 +1,16 @@
 //
-//  UMP2PRegisterViewModel.m
+//  UMP2PFindPwdViewModel.m
 //  UMP2PAccount
 //
 //  Created by fred on 2019/12/23.
 //
 
-#import "UMP2PRegisterViewModel.h"
-@interface UMP2PRegisterViewModel()
+#import "UMP2PFindPwdViewModel.h"
+@interface UMP2PFindPwdViewModel()
 /// 0 邮箱注册，1 短信注册
 @property (nonatomic, assign) int type;
 @end
-@implementation UMP2PRegisterViewModel
+@implementation UMP2PFindPwdViewModel
 
 - (instancetype)init{
     self = [super init];
@@ -35,13 +35,13 @@
     else if (api == UMHAPICmdPushEmail) {
         [self pushEmail:nextBlock error:errorBlock];
     }
-    else if (api == UMHAPICmdRegist) {
-        [self registerUser:nextBlock error:errorBlock];
+    else if (api == UMHAPICmdFindPwd) {
+        [self findPwd:nextBlock error:errorBlock];
     }
     
 }
 
-- (void)registerUser:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+- (void)findPwd:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
     if (self.userId.length == 0 || self.userPwd.length == 0 || self.code.length == 0) {
         NSString *sError = @"参数不能为空,请重新输入";
         NSError *err = [NSError errorWithDomain:@"" code:-1 userInfo:@{NSLocalizedDescriptionKey : sError}];
@@ -49,7 +49,7 @@
         return;
     }
     [[UMWebClient shareClient] setDataTask:^(int iMsgId, int iError, id aParam) {
-        if (iMsgId == UM_WEB_API_WS_HEAD_I_USER_REGISTER) {
+        if (iMsgId == UM_WEB_API_WS_HEAD_I_USER_MODIFYPWD) {
             if (iError == UM_WEB_API_ERROR_ID_SUC) {
                 nextBlock(aParam);
             }else{
@@ -60,24 +60,18 @@
         }
     }];
     NSString *userId = nil;
-    NSString *email = nil;
-    NSString *phone = nil;
-    int mailType = 0;
+    int verType = 0;
     if (self.type == 0) {
         /// 邮箱注册
-        mailType = 4;
-        email = self.userId;
+        verType = 2;
         userId = self.userId;
-        phone = @"";
     }else{
         /// 短信注册
-        mailType = 3;
-        email = @"";
+        verType = 1;
         userId = [NSString stringWithFormat:@"86%@",self.userId];
-        phone = self.userId;
     }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] registeredUser:userId password:self.userPwd email:email userName:@"" phone:phone cardId:@"" sex:0 telephone:@"" address:@"" birth:@"" mailType:mailType code:self.code];
+        [[UMWebClient shareClient] modifyUserPassword:userId oldPassword:nil newPassword:self.userPwd verCode:self.code verType:verType];
     });
 }
 
@@ -102,7 +96,7 @@
         }
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] pushPhoneSMS:self.userId areaCode:@"86" type:2];
+        [[UMWebClient shareClient] pushPhoneSMS:self.userId areaCode:@"86" type:1];
     });
 }
 
@@ -127,7 +121,7 @@
         }
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] pushEmailMsg:self.userId type:1];
+        [[UMWebClient shareClient] pushEmailMsg:self.userId type:2];
     });
     
 }

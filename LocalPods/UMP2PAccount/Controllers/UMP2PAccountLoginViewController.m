@@ -8,7 +8,7 @@
 #import "UMP2PAccountLoginView.h"
 #import "UMP2PAccountLoginViewModel.h"
 #import "UMP2PRegisterViewController.h"
-
+#import "UMP2PFindPwdViewController.h"
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <Masonry/Masonry.h>
 @interface UMP2PAccountLoginViewController()
@@ -38,7 +38,6 @@
 - (void)bindViewModelForController{
     [self.mView.loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
     [self.mView.forgotBtn addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
-    [self.mView.smsBtn addTarget:self action:@selector(pushSMS) forControlEvents:UIControlEventTouchUpInside];
     [self.mView.registerBtn addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
     
     [self.mView bindViewModel:self.viewModel withParams:nil];
@@ -65,44 +64,10 @@
 }
 
 - (void)forgotPassword{
-    [SVProgressHUD show];
-    [self.viewModel subscribeNext:^(id x) {
-        [SVProgressHUD um_displaySuccessWithStatus:@"找回密码成功"];
-    } error:^(NSError *error) {
-        [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
-    } api:UMHAPICmdFindPwd];
+    UMP2PFindPwdViewController *vc = [[UMP2PFindPwdViewController alloc] init];
+    [self.navigationController pushViewController:vc animated:YES];
     
 }
-
-- (void)pushSMS{
-    
-    UIAlertController *ac = [UIAlertController alertControllerWithTitle:nil message:nil preferredStyle:UIAlertControllerStyleActionSheet];
-    UIAlertAction *actionPush = [UIAlertAction actionWithTitle:@"请求短信验证码" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [SVProgressHUD show];
-        [self.viewModel subscribeNext:^(id x) {
-            [SVProgressHUD um_displaySuccessWithStatus:@"请求短信成功"];
-        } error:^(NSError *error) {
-            [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
-        } api:UMHAPICmdPushSMS];
-    }];
-    
-    UIAlertAction *actionEmail = [UIAlertAction actionWithTitle:@"请求邮箱验证码" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-        [SVProgressHUD show];
-        [self.viewModel subscribeNext:^(id x) {
-            [SVProgressHUD um_displaySuccessWithStatus:@"请求邮件成功"];
-        } error:^(NSError *error) {
-            [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
-        } api:UMHAPICmdPushEmail];
-    }];
-    UIAlertAction *actionCancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-        
-    }];
-    [ac addAction:actionPush];
-    [ac addAction:actionEmail];
-    [ac addAction:actionCancel];
-    [self presentViewController:ac animated:YES completion:nil];
-}
-
 - (void)registerUser{
     UMP2PRegisterViewController *vc = [[UMP2PRegisterViewController alloc] init];
     [self.navigationController pushViewController:vc animated:YES];

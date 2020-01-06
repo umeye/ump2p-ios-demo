@@ -1,21 +1,21 @@
 //
-//  UMP2PRegisterViewController.m
+//  UMP2PFindPwdViewController.m
 //  UMP2PVisual
 //
 //  Created by fred on 2019/12/23.
 //
 
-#import "UMP2PRegisterViewController.h"
-#import "UMP2PRegisterView.h"
-#import "UMP2PRegisterViewModel.h"
+#import "UMP2PFindPwdViewController.h"
+#import "UMP2PFindPwdView.h"
+#import "UMP2PFindPwdViewModel.h"
 #import <Masonry/Masonry.h>
 
-@interface UMP2PRegisterViewController ()
-@property (nonatomic, strong) UMP2PRegisterView *mView;
-@property (nonatomic, strong) UMP2PRegisterViewModel *viewModel;
+@interface UMP2PFindPwdViewController ()
+@property (nonatomic, strong) UMP2PFindPwdView *mView;
+@property (nonatomic, strong) UMP2PFindPwdViewModel *viewModel;
 @end
 
-@implementation UMP2PRegisterViewController
+@implementation UMP2PFindPwdViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -34,7 +34,7 @@
 
 /// 创建视图
 - (void)createViewForConctroller{
-    self.title = @"注册账号";
+    self.title = @"修改密码";
     [self.view addSubview:self.mView];
     [self.view setNeedsUpdateConstraints];
 }
@@ -44,7 +44,7 @@
     
     [self.mView.sendCodeBtn addTarget:self action:@selector(sendCode) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.mView.okBtn addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
+    [self.mView.okBtn addTarget:self action:@selector(findPwd) forControlEvents:UIControlEventTouchUpInside];
     
     [self.mView bindViewModel:self.viewModel withParams:nil];
 }
@@ -56,13 +56,13 @@
     [super updateViewConstraints];
 }
 
-- (void)registerUser{
+- (void)findPwd{
     [SVProgressHUD show];
     [self.viewModel subscribeNext:^(id x) {
-        [SVProgressHUD um_displaySuccessWithStatus:@"请求注册成功"];
+        [SVProgressHUD um_displaySuccessWithStatus:@"请求修改密码成功"];
     } error:^(NSError *error) {
         [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
-    } api:UMHAPICmdRegist];
+    } api:UMHAPICmdFindPwd];
 }
 
 - (void)sendCode{
@@ -95,16 +95,16 @@
 }
 
 #pragma mark -
-- (UMP2PRegisterView *)mView{
+- (UMP2PFindPwdView *)mView{
     if (!_mView) {
-        _mView = [[UMP2PRegisterView alloc] init];
+        _mView = [[UMP2PFindPwdView alloc] init];
     }
     return _mView;
 }
 
-- (UMP2PRegisterViewModel *)viewModel{
+- (UMP2PFindPwdViewModel *)viewModel{
     if (!_viewModel) {
-        _viewModel = [[UMP2PRegisterViewModel alloc] init];
+        _viewModel = [[UMP2PFindPwdViewModel alloc] init];
     }
     return _viewModel;
 }
