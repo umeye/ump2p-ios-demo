@@ -36,7 +36,15 @@
 
 /// 绑定 vm
 - (void)bindViewModelForController{
-    [self.mView.loginBtn addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
+    [[self.mView.loginBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+        self.viewModel.areaCode = 0;
+        [self login];
+    }];
+    [[self.mView.phoneLoginBtn rac_signalForControlEvents:UIControlEventTouchUpInside] subscribeNext:^(__kindof UIControl * _Nullable x) {
+        self.viewModel.areaCode = 86;
+        [self login];
+    }];
+
     [self.mView.forgotBtn addTarget:self action:@selector(forgotPassword) forControlEvents:UIControlEventTouchUpInside];
     [self.mView.registerBtn addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
     
@@ -60,7 +68,6 @@
     } error:^(NSError *error) {
         [SVProgressHUD um_displayErrorWithStatus:error.localizedDescription];
     } api:UMHAPICmdLogin];
-    
 }
 
 - (void)forgotPassword{

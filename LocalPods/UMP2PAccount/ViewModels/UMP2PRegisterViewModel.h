@@ -13,6 +13,9 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userPwd;
 @property (nonatomic, copy) NSString *code;
+@property (nonatomic, assign) int areaCode;
+/// 0 邮箱注册，1 短信注册
+@property (nonatomic, assign) int type;
 @end
 
 NS_ASSUME_NONNULL_END

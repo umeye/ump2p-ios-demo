@@ -9,6 +9,6 @@
 @interface UMP2PAccountLoginViewModel : NSObject <UMViewModelProtocol>
 @property (nonatomic, copy) NSString *userId;
 @property (nonatomic, copy) NSString *userPwd;
-
+@property (nonatomic, assign) int areaCode;
 
 @end

@@ -11,6 +11,7 @@
 
 /// 登录按钮
 @property (nonatomic, strong) UIButton *loginBtn;
+@property (nonatomic, strong) UIButton *phoneLoginBtn;
 /// 注册按钮
 @property (nonatomic, strong) UIButton *registerBtn;
 /// 忘记密码

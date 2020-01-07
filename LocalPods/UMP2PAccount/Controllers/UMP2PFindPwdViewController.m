@@ -34,7 +34,6 @@
 
 /// 创建视图
 - (void)createViewForConctroller{
-    self.title = @"修改密码";
     [self.view addSubview:self.mView];
     [self.view setNeedsUpdateConstraints];
 }
@@ -47,6 +46,14 @@
     [self.mView.okBtn addTarget:self action:@selector(findPwd) forControlEvents:UIControlEventTouchUpInside];
     
     [self.mView bindViewModel:self.viewModel withParams:nil];
+    
+    [RACObserve(self.viewModel, type) subscribeNext:^(id  _Nullable x) {
+        if (self.viewModel.type == 0) {
+            self.title = @"通过邮箱修改密码";
+        }else{
+            self.title = @"通过手机修改密码";
+        }
+    }];
 }
 
 - (void)updateViewConstraints{

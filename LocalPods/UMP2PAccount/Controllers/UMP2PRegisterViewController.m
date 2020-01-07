@@ -34,7 +34,6 @@
 
 /// 创建视图
 - (void)createViewForConctroller{
-    self.title = @"注册账号";
     [self.view addSubview:self.mView];
     [self.view setNeedsUpdateConstraints];
 }
@@ -47,6 +46,14 @@
     [self.mView.okBtn addTarget:self action:@selector(registerUser) forControlEvents:UIControlEventTouchUpInside];
     
     [self.mView bindViewModel:self.viewModel withParams:nil];
+    
+    [RACObserve(self.viewModel, type) subscribeNext:^(id  _Nullable x) {
+        if (self.viewModel.type == 0) {
+            self.title = @"邮箱注册";
+        }else{
+            self.title = @"手机注册";
+        }
+    }];
 }
 
 - (void)updateViewConstraints{

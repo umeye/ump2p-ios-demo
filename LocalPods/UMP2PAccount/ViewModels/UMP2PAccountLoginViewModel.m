@@ -8,6 +8,14 @@
 #import "UMP2PAccountLoginViewModel.h"
 @implementation UMP2PAccountLoginViewModel
 
+- (instancetype)init{
+    self = [super init];
+    if (self) {
+        self.areaCode = 0;
+    }
+    return self;
+}
+
 - (void)subscribeNext:(void (^)(id))nextBlock error:(void (^)(NSError *))errorBlock{
     [self subscribeNext:nextBlock error:errorBlock api:0 param:nil];
 }
@@ -50,7 +58,7 @@
         }
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] loginServerAtUserId:self.userId password:self.userPwd];
+        [[UMWebClient shareClient] login:self.userId password:self.userPwd areaCode:self.areaCode];
     });
 }
 

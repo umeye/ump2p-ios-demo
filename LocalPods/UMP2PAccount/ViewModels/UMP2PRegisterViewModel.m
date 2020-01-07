@@ -7,8 +7,6 @@
 
 #import "UMP2PRegisterViewModel.h"
 @interface UMP2PRegisterViewModel()
-/// 0 邮箱注册，1 短信注册
-@property (nonatomic, assign) int type;
 @end
 @implementation UMP2PRegisterViewModel
 
@@ -16,6 +14,7 @@
     self = [super init];
     if (self) {
         self.type = 0;
+        self.areaCode = 86;
     }
     return self;
 }
@@ -62,22 +61,19 @@
     NSString *userId = nil;
     NSString *email = nil;
     NSString *phone = nil;
-    int mailType = 0;
+    int verType = 0;
+    int areaCode = 0;
     if (self.type == 0) {
         /// 邮箱注册
-        mailType = 4;
-        email = self.userId;
-        userId = self.userId;
-        phone = @"";
+        verType = 4;
+        areaCode = 0;
     }else{
         /// 短信注册
-        mailType = 3;
-        email = @"";
-        userId = [NSString stringWithFormat:@"86%@",self.userId];
-        phone = self.userId;
+        verType = 3;
+        areaCode = self.areaCode;
     }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] registeredUser:userId password:self.userPwd email:email userName:@"" phone:phone cardId:@"" sex:0 telephone:@"" address:@"" birth:@"" mailType:mailType code:self.code];
+        [[UMWebClient shareClient] registeredUser:self.userId password:self.userPwd userName:@"" verType:verType verCode:self.code areaCode:areaCode];
     });
 }
 

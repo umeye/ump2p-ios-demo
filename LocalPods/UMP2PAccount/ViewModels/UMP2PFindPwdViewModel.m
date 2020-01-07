@@ -7,8 +7,6 @@
 
 #import "UMP2PFindPwdViewModel.h"
 @interface UMP2PFindPwdViewModel()
-/// 0 邮箱注册，1 短信注册
-@property (nonatomic, assign) int type;
 @end
 @implementation UMP2PFindPwdViewModel
 
@@ -16,6 +14,7 @@
     self = [super init];
     if (self) {
         self.type = 0;
+        self.areaCode = 86;
     }
     return self;
 }
@@ -59,19 +58,19 @@
             }
         }
     }];
-    NSString *userId = nil;
     int verType = 0;
+    int areaCode = 0;
     if (self.type == 0) {
         /// 邮箱注册
         verType = 2;
-        userId = self.userId;
+        areaCode = 0;
     }else{
         /// 短信注册
         verType = 1;
-        userId = [NSString stringWithFormat:@"86%@",self.userId];
+        areaCode = self.areaCode;
     }
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] modifyUserPassword:userId oldPassword:nil newPassword:self.userPwd verCode:self.code verType:verType];
+        [[UMWebClient shareClient] modifyUserPassword:self.userId oldPassword:nil newPassword:self.userPwd verCode:self.code verType:verType areaCode:areaCode];
     });
 }
 

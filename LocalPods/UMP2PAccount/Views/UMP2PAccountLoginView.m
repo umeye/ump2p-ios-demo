@@ -28,6 +28,7 @@
     [self addSubview:self.userIdTextField];
     [self addSubview:self.userPwdTextField];
     [self addSubview:self.loginBtn];
+    [self addSubview:self.phoneLoginBtn];
     [self addSubview:self.forgotBtn];
 //    [self addSubview:self.smsBtn];
     [self addSubview:self.registerBtn];
@@ -48,9 +49,15 @@
     
     [self.loginBtn mas_makeConstraints:^(MASConstraintMaker *make) {
        make.top.mas_equalTo(self.userPwdTextField.mas_bottom).offset(20);
-        make.left.right.height.mas_equalTo(self.userIdTextField);
+        make.left.height.mas_equalTo(self.userIdTextField);
+        make.right.mas_equalTo(self.mas_centerX).offset(-10);
     }];
     
+    [self.phoneLoginBtn mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.top.height.mas_equalTo(self.loginBtn);
+        make.right.mas_equalTo(self.userIdTextField);
+        make.left.mas_equalTo(self.mas_centerX).offset(10);
+    }];
     
 //    [self.smsBtn mas_makeConstraints:^(MASConstraintMaker *make) {
 //       make.top.mas_equalTo(self.forgotBtn.mas_bottom).offset(20);
@@ -58,11 +65,11 @@
 //    }];
     [self.registerBtn mas_makeConstraints:^(MASConstraintMaker *make) {
        make.top.mas_equalTo(self.loginBtn.mas_bottom).offset(20);
-        make.left.right.height.mas_equalTo(self.loginBtn);
+        make.left.right.height.mas_equalTo(self.userIdTextField);
     }];
     [self.forgotBtn mas_makeConstraints:^(MASConstraintMaker *make) {
        make.top.mas_equalTo(self.registerBtn.mas_bottom).offset(20);
-        make.left.right.height.mas_equalTo(self.loginBtn);
+        make.left.right.height.mas_equalTo(self.registerBtn);
     }];
     [super updateConstraints];
 }
@@ -108,6 +115,18 @@
         _loginBtn.layer.cornerRadius = 5;
     }
     return _loginBtn;
+}
+
+- (UIButton *)phoneLoginBtn{
+    if (!_phoneLoginBtn) {
+        _phoneLoginBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_phoneLoginBtn setTitle:@"手机登录" forState:UIControlStateNormal];
+        [_phoneLoginBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_phoneLoginBtn setBackgroundColor:[UIColor lightGrayColor]];
+        _phoneLoginBtn.layer.masksToBounds = YES;
+        _phoneLoginBtn.layer.cornerRadius = 5;
+    }
+    return _phoneLoginBtn;
 }
 
 
