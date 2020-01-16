@@ -58,9 +58,6 @@
             }
         }
     }];
-    NSString *userId = nil;
-    NSString *email = nil;
-    NSString *phone = nil;
     int verType = 0;
     int areaCode = 0;
     if (self.type == 0) {
