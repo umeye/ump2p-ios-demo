@@ -9,7 +9,7 @@
 #import "UMP2PVisualLivePreiviewViewModel.h"
 
 #import <Masonry/Masonry.h>
-@interface UMP2PVisualLivePreiviewViewController()
+@interface UMP2PVisualLivePreiviewViewController()<HKPlayerDelegate>
 
 @property (nonatomic, strong) UMP2PVisualLivePreiviewView *mView;
 @property (nonatomic, strong) UMP2PVisualLivePreiviewViewModel *viewModel;
@@ -73,6 +73,10 @@
     
     [self.mView.recordBtn addTarget:self action:@selector(record) forControlEvents:UIControlEventTouchUpInside];
     
+    [self.mView.soundButton addTarget:self action:@selector(sound) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.mView.talkButton addTarget:self action:@selector(talk) forControlEvents:UIControlEventTouchUpInside];
+
     // 更新播放状态
     [RACObserve(self.viewModel, playState) subscribeNext:^(id  _Nullable x) {
         if (self.viewModel.playState == HKS_NPC_D_MON_DEV_PLAY_STATUS_STOP
@@ -83,6 +87,11 @@
         }
         self.mView.stateLable.text = self.viewModel.playStateDescription;
     }];
+    
+    //APP运行状态通知，将要被挂起
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterBackground:) name:UIApplicationWillResignActiveNotification object:nil];
+    // APP进入前台
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(appDidEnterPlayground:) name:UIApplicationDidBecomeActiveNotification object:nil];
 }
 
 - (void)updateViewConstraints{
@@ -111,6 +120,19 @@
     } api:4];
 }
 
+/// 对讲
+- (void)talk{
+    [self.viewModel subscribeNext:^(id x) {
+
+    } error:^(NSError *error) {
+        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+    } api:6];
+}
+/// 声音
+- (void)sound{
+    self.viewModel.audioEnable = !self.viewModel.audioEnable;
+    self.mView.soundButton.selected = self.viewModel.audioEnable;
+}
 - (void)record{
     if (self.mView.recordBtn.selected) {
         // 停止录像
@@ -132,6 +154,64 @@
     
 }
 #pragma mark -
+- (void)appDidEnterBackground:(NSNotification *)note{
+    /// 后台停止播放
+    [self.viewModel subscribeNext:^(id x) {
+        
+    } error:^(NSError *error) {
+            
+    } api:1];
+}
+
+- (void)appDidEnterPlayground:(NSNotification *)note{
+    // 前台继续播放
+    [self.viewModel subscribeNext:^(id x) {
+        
+    } error:^(NSError *error) {
+            
+    } api:0];
+}
+#pragma mark -
+#pragma mark 播放
+- (void)playerFeedback:(id)player status:(int)status{
+    self.viewModel.playState = status;
+    if (status == HKS_NPC_D_MON_DEV_PLAY_STATUS_ERROR_NODATA) {
+        // 超时无媒体数据返回，重连
+    }
+}
+
+- (void)playerFeedbackConnect:(id)player{
+    [SVProgressHUD um_dispalyLoadingMsgWithStatus:@"Loading"];
+}
+
+- (void)playerFeedbackError:(id)player error:(NSError *)error{
+    [SVProgressHUD um_displayErrorWithStatus:[NSString stringWithFormat:@"播放失败,错误码%zi", error.code]];
+}
+
+- (void)playerFeedbackPlaying:(id)player{
+    [SVProgressHUD dismiss];
+}
+
+#pragma mark 对讲
+- (void)playerTalkError:(id)player error:(NSError *)error{
+    [SVProgressHUD um_displayErrorWithStatus:@"Talk failed"];
+    self.mView.talkButton.selected = NO;
+}
+
+- (void)playerTalkSuccess:(id)player{
+    [SVProgressHUD dismiss];
+    self.mView.talkButton.selected = YES;
+}
+
+- (void)playerTalkConnect:(id)player{
+    [SVProgressHUD um_dispalyLoadingMsgWithStatus:@"Loading"];
+}
+
+- (void)playerTalkStop:(id)player{
+    self.mView.talkButton.selected = NO;
+}
+
+#pragma mark -
 - (UMP2PVisualLivePreiviewView *)mView{
     if (!_mView) {
         _mView = [[UMP2PVisualLivePreiviewView alloc] init];
@@ -142,6 +222,7 @@
 - (UMP2PVisualLivePreiviewViewModel *)viewModel{
     if (!_viewModel) {
         _viewModel = [[UMP2PVisualLivePreiviewViewModel alloc] init];
+        [_viewModel setClientDelegate:self];
     }
     return _viewModel;
 }
@@ -153,13 +234,13 @@
          */
         _playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
         //设备序列号
-        _playItem.sDeviceId = @"umks64rp7srj";//@"0059f67caf1b4a0f"  e528c2b5944f502c;
+        _playItem.sDeviceId = @"e528c2b5944f502c";//@"0059f67caf1b4a0f"  e528c2b5944f502c;
         //设备用户名
         _playItem.sUserId = @"admin";
         //设备密码
-        _playItem.sUserPwd = @"";
+        _playItem.sUserPwd = @"123456";
         //设备通道,从0开始
-        _playItem.iChannel = 0;
+        _playItem.iChannel = 2;
         //设备码流，1:子码流，0:主码流
         _playItem.iStream = 1;
         //设置设备协议类型，p2p模式可以不填写，直连直接写死UMSP类型

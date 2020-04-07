@@ -46,7 +46,7 @@
     HKSDeviceClient *client = playModel.obj;
     if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
         // 当前为正在播放状态，返直接回播放成功
-        task(UM_WEB_API_ERROR_ID_SUC, nil);
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
         return;
     }
     else if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PAUSE) {
@@ -54,11 +54,11 @@
         if (connModel.type == HKS_NPC_D_MON_CLIENT_MODE_MP4) {
             // 本地MP4播放模式下，调用本地MP4的恢复播放接口
             [client resume];
-            task(UM_WEB_API_ERROR_ID_SUC, nil);
+            task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
         }else{
             // 远程回放播放模式下，调用远程回放的恢复播放接口
             [client controlRecord:HKS_NPC_D_MON_PLAY_CTRL_RESUME data:0];
-            task(UM_WEB_API_ERROR_ID_SUC, nil);
+            task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
         }
         return;
     }else if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_STOP
@@ -68,7 +68,7 @@
         if (connModel) {
             [client setDeviceConnParam:connModel.obj type:connModel.type];
         }else {
-            task(UM_WEB_API_ERROR_ID_BAD_REQUEST, nil);
+            task(HKS_NPC_D_MPI_MON_ERROR_FAIL, nil);
             return;
         }
         // 如果为回放模式，需要设置回放数据
@@ -79,18 +79,17 @@
                 [client setRecFileConnParam:recFile];
             }else{
                 //缺少回放数据
-                task(UM_WEB_API_ERROR_ID_BAD_REQUEST, nil);
+                task(HKS_NPC_D_MPI_MON_ERROR_FAIL, nil);
                 return;
             }
         }
     }
-    // 开启声音
-    client.audioEnabled = YES;
     // 关闭全屏显示模式，按比例播放
     client.fullScreenEnabled = NO;
+    client.delegate = self.delegate;
     // 开始播放
     [client start:NO];
-    task(UM_WEB_API_ERROR_ID_SUC, nil);
+    task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
 }
 
 - (void)startOrStop:(UMDataTask)task index:(int)aIndex{
@@ -108,7 +107,7 @@
     
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
     [client stop:NO exit:YES];
-    task(UM_WEB_API_ERROR_ID_SUC, nil);
+    task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
 }
 
 // 录像
@@ -120,10 +119,10 @@
         }else{
             [client startRecordToPath:param];
         }
-        task(UM_WEB_API_ERROR_ID_SUC, nil);
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
     }else{
-        [client startRecordToPath:param];
-        task(UM_WEB_API_ERROR_ID_CONN, nil);
+        [client stopLocalMP4REC:YES];
+        task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
     }
 }
 // 抓拍
@@ -131,9 +130,56 @@
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
     if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
         [client savePhotosToPath:param];
-        task(UM_WEB_API_ERROR_ID_SUC, nil);
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
     }else{
-        task(UM_WEB_API_ERROR_ID_CONN, nil);
+        task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
+    }
+}
+
+
+// 对讲
+- (void)talk:(UMDataTask)task index:(int)aIndex{
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
+        if (client.talkState == 1){
+            [client stopPPTTalk];
+        }else{
+            [client startPPTTalk];
+        }
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
+    }else{
+        task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
+    }
+}
+
+- (void)talk:(UMDataTask)task index:(int)aIndex state:(BOOL)state{
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
+        if (state && client.talkState == 0){
+            [client startPPTTalk];
+        }else if(!state){
+            [client stopPPTTalk];
+        }
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
+    }else{
+        task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
+    }
+}
+
+
+- (void)ptz:(UMDataTask)task
+        cmd:(int)aCmd
+      index:(int)aIndex {
+    [self ptz:task cmd:aCmd param:5 index:aIndex];
+}
+- (void)ptz:(UMDataTask)task cmd:(int)aCmd param:(int)param index:(int)aIndex{
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
+        
+        [client ptzControlWithCmd:aCmd data:param];
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
+    }else{
+        task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
     }
 }
 
@@ -142,6 +188,11 @@
 - (HKSDeviceClient *)deviceClientAtIndex:(int)aIndex{
     ClientModel *model = [self clientModelAtIndex:aIndex];
     return model.obj;
+}
+
+- (void)setClientAudioEnabled:(BOOL)enabled index:(int)aIndex{
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    client.audioEnabled = enabled;
 }
 
 - (UIView *)displayView{

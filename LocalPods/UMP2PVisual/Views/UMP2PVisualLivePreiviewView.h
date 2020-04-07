@@ -23,6 +23,10 @@
 @property (nonatomic, strong) UIButton *captureBtn;
 /// 本地录制按钮
 @property (nonatomic, strong) UIButton *recordBtn;
+/// 对讲
+@property (nonatomic, strong) UIButton *talkButton;
+/// 监听
+@property (nonatomic, strong) UIButton *soundButton;
 
 - (void)setupDisplayView:(UIView *)aView;
 

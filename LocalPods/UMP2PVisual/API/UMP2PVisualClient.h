@@ -21,10 +21,13 @@ typedef void (^UMDataTask)(int iError, id aParam);
 
 /// 播放Client
 @interface UMP2PVisualClient : NSObject
+@property (nonatomic, weak) id delegate;
 
 /// 设置播放连接参数数据
 - (void)setupDeviceConnData:(TreeListItem *)aItem aIndex:(int)aIndex;
 - (void)setupDeviceConnData:(TreeListItem *)aItem;
+
+- (void)setClientAudioEnabled:(BOOL)enabled index:(int)aIndex;
 
 /// 设置回放数据
 - (void)setupDeviceRecData:(HKSRecFile *)aItem aIndex:(int)aIndex;
@@ -52,4 +55,27 @@ typedef void (^UMDataTask)(int iError, id aParam);
 /// 录像
 - (void)record:(UMDataTask)task index:(int)aIndex param:(NSString *)param;
 
+
+/// 对讲
+- (void)talk:(UMDataTask)task index:(int)aIndex;
+/// 对讲,state：NO=关闭，YES=开启
+- (void)talk:(UMDataTask)task index:(int)aIndex state:(BOOL)state;
+
+/// 云台控制
+/// @param task 通知
+/// @param aCmd 云台控制命定，参考HKSDevicePtzCmd
+/// @param aIndex 索引
+- (void)ptz:(UMDataTask)task
+        cmd:(int)aCmd
+      index:(int)aIndex;
+
+/// 云台控制
+/// @param task 通知
+/// @param aCmd 云台控制命定，参考HKSDevicePtzCmd
+/// @param param 参数
+/// @param aIndex 索引
+- (void)ptz:(UMDataTask)task
+        cmd:(int)aCmd
+      param:(int)param
+      index:(int)aIndex;
 @end

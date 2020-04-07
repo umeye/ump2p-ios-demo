@@ -121,7 +121,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     
     // demo自定义通知，登出事件
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(logoutNotification:) name:UMLogoutNotificationKey object:nil];
-    ULogD(@"创建Login通知监听");
+//    ULogD(@"创建Login通知监听");
 }
 
 - (void)pushLoginNotification:(NSNotification *)noti{

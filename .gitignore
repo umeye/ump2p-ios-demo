@@ -61,5 +61,10 @@ fastlane/test_output
 # https://github.com/johnno1962/injectionforxcode
 
 iOSInjectionProject/
-LocalPods/.DS_Store
+Pods/*
 .DS_Store
+Podfile.lock
+*.xcworkspace
+LocalPods/UMP2P.podspec
+LocalPods/UMP2P/*
+UMP2PDemo/umssl.crt

@@ -11,7 +11,6 @@
 @interface UMP2PVisualLivePreiviewViewModel()
 @property (nonatomic, strong) UMP2PVisualClient *client;
 
-@property (nonatomic, strong) NSTimer *playStateTimer;
 @end
 
 @implementation UMP2PVisualLivePreiviewViewModel
@@ -21,7 +20,6 @@
     if (self) {
         self.displayIndex = 0;
         self.playState = HKS_NPC_D_MON_DEV_PLAY_STATUS_READY;
-        
     }
     return self;
 }
@@ -49,16 +47,19 @@
     }
     else if (api == 5) {
         [self record:nextBlock error:errorBlock];
+    }else if (api == 6) {
+        [self talk:nextBlock error:errorBlock];
     }else{
         NSString *sError = [NSString stringWithFormat:@"请求错误，该功能ID不支持[%d]", api];
         NSError *err = [NSError errorWithDomain:@"" code:1 userInfo:@{NSLocalizedDescriptionKey : sError}];
         errorBlock(err);
     }
 }
+
 - (void)startOrStop:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-    [self.playStateTimer setFireDate:[NSDate distantPast]];
+
     [self.client startOrStop:^(int iError, id aParam) {
-        if (iError == UM_WEB_API_ERROR_ID_SUC) {
+        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
         }else{
             NSString *sError = [NSString stringWithFormat:@"请求错误，错误码[%d]", iError];
@@ -67,10 +68,10 @@
         }
     } index:self.displayIndex];
 }
+
 - (void)start:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-    [self.playStateTimer setFireDate:[NSDate distantPast]];
     [self.client start:^(int iError, id aParam) {
-        if (iError == UM_WEB_API_ERROR_ID_SUC) {
+        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
         }else{
             NSString *sError = [NSString stringWithFormat:@"请求播放错误，错误码[%d]", iError];
@@ -84,7 +85,7 @@
     NSString *documentDirPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     NSString *path = [documentDirPath stringByAppendingPathComponent:@"file"];
     [self.client capture:^(int iError, id aParam) {
-        if (iError == UM_WEB_API_ERROR_ID_SUC) {
+        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
         }else{
             NSString *sError = [NSString stringWithFormat:@"请求播放错误，错误码[%d]", iError];
@@ -98,7 +99,7 @@
     NSString *documentDirPath = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
     NSString *path = [documentDirPath stringByAppendingPathComponent:@"file"];
     [self.client record:^(int iError, id aParam) {
-        if (iError == UM_WEB_API_ERROR_ID_SUC) {
+        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
         }else{
             NSString *sError = [NSString stringWithFormat:@"请求播放错误，错误码[%d]", iError];
@@ -111,10 +112,8 @@
 - (void)stop:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
     
     [self.client stop:^(int iError, id aParam) {
-        if (iError == UM_WEB_API_ERROR_ID_SUC) {
+        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
-            [self.playStateTimer invalidate];
-            self.playStateTimer = nil;
             self.playState = HKS_NPC_D_MON_DEV_PLAY_STATUS_STOP;
         }else{
             NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
@@ -123,13 +122,23 @@
         }
     } index:self.displayIndex];
 }
-#pragma mark -
-- (void)updatePlayState{
-    int state = [self.client playStateAtIndex:self.displayIndex];
-    if (self.playState == state) {
-        return;
-    }
-    self.playState = state;
+
+- (void)talk:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    
+    [self.client talk:^(int iError, id aParam) {
+        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
+            nextBlock(@{});
+            return;
+        }
+        NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
+        NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+        errorBlock(err);
+    } index:self.displayIndex];
+}
+
+- (void)setAudioEnable:(int)audioEnable{
+    _audioEnable = audioEnable;
+    [self.client setClientAudioEnabled:audioEnable index:self.displayIndex];
 }
 #pragma mark -
 - (UMP2PVisualClient *)client{
@@ -141,6 +150,10 @@
 
 - (void)setupDeviceConnData:(id)aItem{
     [self.client setupDeviceConnData:aItem aIndex:self.displayIndex];
+}
+
+- (void)setClientDelegate:(id)delegate{
+    self.client.delegate = delegate;
 }
 
 - (UIView *)displayView{
@@ -187,10 +200,5 @@
     return UMLocalized(@"");
 }
 
-- (NSTimer *)playStateTimer{
-    if (!_playStateTimer) {
-        _playStateTimer = [NSTimer scheduledTimerWithTimeInterval:0.5 target:self selector:@selector(updatePlayState) userInfo:nil repeats:YES];
-    }
-    return _playStateTimer;
-}
+
 @end

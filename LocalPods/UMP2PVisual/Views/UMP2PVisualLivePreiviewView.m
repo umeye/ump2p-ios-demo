@@ -26,6 +26,8 @@
     [self.bottomView addSubview:self.startOrStopBtn];
     [self.bottomView addSubview:self.captureBtn];
     [self.bottomView addSubview:self.recordBtn];
+    [self.bottomView addSubview:self.talkButton];
+    [self.bottomView addSubview:self.soundButton];
 }
 
 - (void)updateConstraints{
@@ -48,7 +50,7 @@
         make.left.right.top.mas_equalTo(0);
     }];
     
-    NSArray *tViews = @[self.startOrStopBtn, self.captureBtn, self.recordBtn];
+    NSArray *tViews = @[self.startOrStopBtn, self.captureBtn, self.recordBtn, self.talkButton , self.soundButton];
     int i = 0;
     for (UIView *view in tViews) {
         [view mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -130,5 +132,25 @@
         [_recordBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
     return _recordBtn;
+}
+
+- (UIButton *)talkButton{
+    if (!_talkButton) {
+        _talkButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_talkButton setTitle:@"对讲" forState:UIControlStateNormal];
+        [_talkButton setTitle:@"对讲中" forState:UIControlStateSelected];
+        [_talkButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    return _talkButton;
+}
+
+- (UIButton *)soundButton{
+    if (!_soundButton) {
+        _soundButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_soundButton setTitle:@"监听" forState:UIControlStateNormal];
+        [_soundButton setTitle:@"关闭" forState:UIControlStateSelected];
+        [_soundButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    return _soundButton;
 }
 @end

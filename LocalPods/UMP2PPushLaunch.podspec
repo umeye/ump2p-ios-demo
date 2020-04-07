@@ -31,7 +31,7 @@ TODO: Add long description of the pod here.
   s.author           = { '王伏' => 'fred@umeye.com' }
   s.source           = { :git => 'fred@umeye.com:p2p-push-ios/#{s.name}.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '8.0'
+  s.ios.deployment_target = '9.0'
 
   s.source_files = "#{s.name}/**/*.{h,m}"
   s.resource_bundles = {
