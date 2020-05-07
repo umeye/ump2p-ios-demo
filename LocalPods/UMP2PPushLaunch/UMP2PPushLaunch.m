@@ -44,11 +44,8 @@ static NSString *const kLauncherEnvAppSecret = @"appSecret";
 }
 
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken {
-    NSString *token = [[deviceToken description] stringByTrimmingCharactersInSet:[NSCharacterSet characterSetWithCharactersInString:@"<>"]];
-    token = [token stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSLog(@"\n>>>[GTSdk DeviceToken Success]:%@\n\n", token);
     // [ GTSdk ]：向个推服务器注册deviceToken
-    [GeTuiSdk registerDeviceToken:token];
+    [GeTuiSdk registerDeviceTokenData:deviceToken];
 }
 
 #pragma mark - GTSDK Delegate
