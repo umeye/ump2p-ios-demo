@@ -79,6 +79,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     builder.accountEnable = [umAccount boolValue];
     // 启动异步请求
     builder.asyncEnable = YES;
+    
     // 启动SDK
     [UMConfig startSDK:appId];
     
@@ -89,24 +90,13 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 - (void)applicationDidEnterBackground:(UIApplication *)application{
     
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    [[UMWebClient shareClient] setClientNetState:0];
     //通知设备停止播放
     [[NSNotificationCenter defaultCenter] postNotificationName:@"kUMAppBackgroundNotificationKey" object:nil];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application {
     [UIApplication sharedApplication].applicationIconBadgeNumber = 0;
-    
-    [[UMWebClient shareClient] setClientNetState:1];
-    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        //检测连接服务器状态重连
-        [[UMWebClient shareClient] reconnectServer];
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //通知设备重连
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"kUMAppForegroundNotificationKey" object:nil];
-        });
-        
-    });
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"kUMAppForegroundNotificationKey" object:nil];
 }
 
 - (void)setUpUIThread:(UIApplication *)application {
@@ -138,6 +128,7 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
 }
 
 - (void)logoutNotification:(NSNotification *)noti{
+    
     [[UMWebClient shareClient] logoutServer:YES];
     [self pushLoginNotification:noti];
 }
