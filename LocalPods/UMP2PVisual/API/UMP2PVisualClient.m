@@ -113,13 +113,14 @@
 // 录像
 - (void)record:(UMDataTask)task index:(int)aIndex param:(NSString *)param{
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    NSString *filePath = @"";
     if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
         if (client.recordEnabled) {
-            [client stopLocalMP4REC:YES];
+            filePath = [client stopLocalMP4REC:YES];
         }else{
             [client startRecordToPath:param];
         }
-        task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
+        task(HKS_NPC_D_MPI_MON_ERROR_SUC, filePath);
     }else{
         [client stopLocalMP4REC:YES];
         task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
@@ -181,6 +182,70 @@
     }else{
         task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
     }
+}
+
+- (void)customFuncJson:(UMDataTask)task
+               devInfo:(TreeListItem *)devInfo msgId:(int)msgId param:(NSMutableDictionary *)param index:(int)aIndex {
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    // 播放连接数据模型
+    ClientModel *connModel = [self deviceConnDataAtIndex:aIndex];
+    if (devInfo) {
+        [client setDeviceConnParam:devInfo];
+    }else if(connModel){
+        [client setDeviceConnParam:connModel.obj];
+    }
+    [client customFuncJson:msgId param:param autoStop:NO handler:^(id data, int errorCode) {
+        if (errorCode == HKS_NPC_D_MPI_MON_ERROR_SUC){
+            
+        }else{
+            
+        }
+        task(errorCode, data);
+    }];
+}
+
+#pragma mark - 设备搜索
+static BOOL _isDeviceSearching = NO;
++ (void)startSearch:(void (^)(id data, BOOL isUpdate, NSError *error))completionHandler{
+    NSLog(@"开始进行局域网设备发现.");
+    [HKSDeviceClient startSearchDevice];
+    _isDeviceSearching = YES;
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSMutableArray *localDevices = nil;
+        while (_isDeviceSearching) {
+            NSMutableArray *tempLocalDevices = [NSMutableArray array];
+            [HKSDeviceClient getSearchDevTable:tempLocalDevices];
+            // 没有发现设备，重新进行下次提取
+            if (tempLocalDevices.count == 0) {
+                NSLog(@"没有发现到任何设备.");
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   completionHandler(tempLocalDevices, NO, nil);
+                });
+                [NSThread sleepForTimeInterval:0.5];
+                continue;
+            }
+            // 跟上次搜索到的数量一致，重新进行下次提取
+            if (tempLocalDevices.count == localDevices.count) {
+                NSLog(@"没有发现新设备.上次发现设备数:%zi", tempLocalDevices.count);
+                
+                dispatch_async(dispatch_get_main_queue(), ^{
+                   completionHandler(tempLocalDevices, NO, nil);
+                });
+                [NSThread sleepForTimeInterval:0.5];
+                continue;
+            }
+            NSLog(@"发现设备数:%zi", tempLocalDevices.count);
+            localDevices = tempLocalDevices;
+            dispatch_async(dispatch_get_main_queue(), ^{
+               completionHandler(tempLocalDevices, YES, nil);
+            });
+        }
+    });
+}
++ (void)stopSearch{
+    _isDeviceSearching = NO;
+    [HKSDeviceClient stopSearchDevice];
+    NSLog(@"停止进行局域网设备发现.");
 }
 
 #pragma mark - Get/Set

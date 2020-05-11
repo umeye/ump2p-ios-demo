@@ -78,4 +78,14 @@ typedef void (^UMDataTask)(int iError, id aParam);
         cmd:(int)aCmd
       param:(int)param
       index:(int)aIndex;
+
+- (void)customFuncJson:(UMDataTask)task
+               devInfo:(TreeListItem *)devInfo
+                 msgId:(int)msgId
+                 param:(NSMutableDictionary *)param
+                 index:(int)aIndex;
+
++ (void)startSearch:(void (^)(id data, BOOL isUpdate, NSError *error))completionHandler;
+
++ (void)stopSearch;
 @end
