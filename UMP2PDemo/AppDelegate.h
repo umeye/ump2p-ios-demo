@@ -1,6 +1,6 @@
 //
 //  AppDelegate.h
-//  P2P_AEye3
+//  Demo
 //
 //  Created by fred on 2019/3/29.
 //  Copyright © 2019 UMEYE. All rights reserved.

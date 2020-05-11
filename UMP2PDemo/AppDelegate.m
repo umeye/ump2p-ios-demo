@@ -1,6 +1,6 @@
 //
 //  AppDelegate.m
-//  P2P_AEye3
+//  Demo
 //
 //  Created by fred on 2019/3/29.
 //  Copyright © 2019 UMEYE. All rights reserved.
@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import <UMLaunchKit/UMLauncher.h>
+#import <AVKit/AVKit.h>
 @interface AppDelegate ()
 
 @end
@@ -17,7 +18,6 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
     

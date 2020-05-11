@@ -7,7 +7,7 @@
 #import "UMP2PVisualLivePreiviewViewController.h"
 #import "UMP2PVisualLivePreiviewView.h"
 #import "UMP2PVisualLivePreiviewViewModel.h"
-
+#import "UMP2PVisualClient.h"
 #import <Masonry/Masonry.h>
 @interface UMP2PVisualLivePreiviewViewController()<HKPlayerDelegate>
 
@@ -16,24 +16,8 @@
 @end
 @implementation UMP2PVisualLivePreiviewViewController
 
-- (instancetype)init{
-    self = [super init];
-    if (self) {
-
-    }
-    return self;
-}
-
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
-    
-    // 开始播放
-    [self.viewModel setupDeviceConnData:self.playItem];
-    [self.viewModel subscribeNext:^(id x) {
-    } error:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    } api:0];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -76,6 +60,8 @@
     [self.mView.soundButton addTarget:self action:@selector(sound) forControlEvents:UIControlEventTouchUpInside];
     
     [self.mView.talkButton addTarget:self action:@selector(talk) forControlEvents:UIControlEventTouchUpInside];
+    
+    [self.mView.apButton addTarget:self action:@selector(apMode:) forControlEvents:UIControlEventTouchUpInside];
 
     // 更新播放状态
     [RACObserve(self.viewModel, playState) subscribeNext:^(id  _Nullable x) {
@@ -130,6 +116,7 @@
 }
 /// 声音
 - (void)sound{
+    
     self.viewModel.audioEnable = !self.viewModel.audioEnable;
     self.mView.soundButton.selected = self.viewModel.audioEnable;
 }
@@ -152,6 +139,12 @@
         } api:5];
     }
     
+}
+
+- (void)apMode:(UIButton *)button{
+    button.selected = !button.selected;
+    [UMUSTSDK setLocalMode:button.selected];
+    [self updateDeviceData];
 }
 #pragma mark -
 - (void)appDidEnterBackground:(NSNotification *)note{
@@ -234,11 +227,11 @@
          */
         _playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
         //设备序列号
-        _playItem.sDeviceId = @"e528c2b5944f502c";//@"0059f67caf1b4a0f"  e528c2b5944f502c;
+        _playItem.sDeviceId = @"e528c2b5944f502c";
         //设备用户名
         _playItem.sUserId = @"admin";
         //设备密码
-        _playItem.sUserPwd = @"123456";
+        _playItem.sUserPwd = @"";
         //设备通道,从0开始
         _playItem.iChannel = 2;
         //设备码流，1:子码流，0:主码流
@@ -248,5 +241,20 @@
 
     }
     return _playItem;
+}
+
+- (void)updateDeviceData{
+    if (self.mView.apButton.selected) {
+        // ap 模式，使用IP直连
+        self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_DIRECT;
+        self.playItem.sAddress = @"192.168.10.247";
+        self.playItem.iPort = 5800;
+    }else{
+        // 正常模式，使用序列号方式连接
+        self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
+        //设备序列号
+        self.playItem.sDeviceId = @"e528c2b5944f502c";
+        
+    }
 }
 @end

@@ -28,12 +28,13 @@
     [self.bottomView addSubview:self.recordBtn];
     [self.bottomView addSubview:self.talkButton];
     [self.bottomView addSubview:self.soundButton];
+    [self.bottomView addSubview:self.apButton];
 }
 
 - (void)updateConstraints{
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.mas_equalTo(0);
-        make.height.mas_equalTo(50);
+        make.height.mas_equalTo(100);
     }];
     [self.menuView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.bottomView.mas_top);
@@ -54,14 +55,25 @@
     int i = 0;
     for (UIView *view in tViews) {
         [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(30);
+            make.height.mas_equalTo(50);
             make.width.mas_equalTo(70);
-            make.centerY.mas_equalTo(self.bottomView);
+            make.top.mas_equalTo(0);
             make.centerX.mas_equalTo(self.bottomView.mas_right).multipliedBy(((CGFloat)i + 1) / ((CGFloat)tViews.count + 1));
         }];
         i++;
     }
 
+    tViews = @[self.apButton];
+    i = 0;
+    for (UIView *view in tViews) {
+        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(50);
+            make.width.mas_equalTo(80);
+            make.top.mas_equalTo(self.startOrStopBtn.mas_bottom);
+            make.centerX.mas_equalTo(self.bottomView.mas_right).multipliedBy(((CGFloat)i + 1) / ((CGFloat)tViews.count + 1));
+        }];
+        i++;
+    }
     [super updateConstraints];
 }
 
@@ -142,6 +154,16 @@
         [_talkButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     }
     return _talkButton;
+}
+
+- (UIButton *)apButton{
+    if (!_apButton) {
+        _apButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_apButton setTitle:@"正常模式" forState:UIControlStateNormal];
+        [_apButton setTitle:@"AP模式" forState:UIControlStateSelected];
+        [_apButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
+    return _apButton;
 }
 
 - (UIButton *)soundButton{

@@ -28,6 +28,8 @@
 /// 监听
 @property (nonatomic, strong) UIButton *soundButton;
 
+@property (nonatomic, strong) UIButton *apButton;
+
 - (void)setupDisplayView:(UIView *)aView;
 
 @end

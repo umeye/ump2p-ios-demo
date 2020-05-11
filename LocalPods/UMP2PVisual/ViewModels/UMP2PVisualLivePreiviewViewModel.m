@@ -49,6 +49,8 @@
         [self record:nextBlock error:errorBlock];
     }else if (api == 6) {
         [self talk:nextBlock error:errorBlock];
+    }else if (api == 7) {
+        [self customFuncJson:nextBlock error:errorBlock];
     }else{
         NSString *sError = [NSString stringWithFormat:@"请求错误，该功能ID不支持[%d]", api];
         NSError *err = [NSError errorWithDomain:@"" code:1 userInfo:@{NSLocalizedDescriptionKey : sError}];
@@ -100,7 +102,7 @@
     NSString *path = [documentDirPath stringByAppendingPathComponent:@"file"];
     [self.client record:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
-            nextBlock(@{});
+            nextBlock(aParam);
         }else{
             NSString *sError = [NSString stringWithFormat:@"请求播放错误，错误码[%d]", iError];
             NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
@@ -124,7 +126,6 @@
 }
 
 - (void)talk:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-    
     [self.client talk:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
@@ -134,6 +135,19 @@
         NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
         errorBlock(err);
     } index:self.displayIndex];
+}
+
+- (void)customFuncJson:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    [self.client customFuncJson:^(int iError, id aParam) {
+        if (iError != HKS_NPC_D_MPI_MON_ERROR_SUC) {
+            NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
+            NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+            errorBlock(err);
+            return;
+        }
+        nextBlock(aParam);
+        
+    } devInfo:nil msgId:1000 param:@{@"test":@"xxx"} index:self.displayIndex];
 }
 
 - (void)setAudioEnable:(int)audioEnable{
