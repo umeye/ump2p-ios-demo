@@ -95,7 +95,7 @@
         }
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] pushPhoneSMS:self.userId areaCode:@"86" type:1];
+        [[UMWebClient shareClient] sendSmsMessage:self.userId areaCode:self.areaCode msgType:1];
     });
 }
 
@@ -120,7 +120,7 @@
         }
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] pushEmailMsg:self.userId type:2];
+        [[UMWebClient shareClient] sendEmailMessage:self.userId msgType:2];
     });
     
 }

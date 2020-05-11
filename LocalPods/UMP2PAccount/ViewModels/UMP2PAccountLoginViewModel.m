@@ -58,7 +58,7 @@
         }
     }];
     dispatch_async(dispatch_get_global_queue(0, 0), ^{
-        [[UMWebClient shareClient] login:self.userId password:self.userPwd areaCode:self.areaCode];
+        [[UMWebClient shareClient] login:self.userId password:self.userPwd areaCode:self.areaCode apiVer:@"1.0.1"];
     });
 }
 
