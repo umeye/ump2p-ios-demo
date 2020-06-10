@@ -146,7 +146,7 @@
         if (client.talkState == 1){
             [client stopPPTTalk];
         }else{
-            [client startTalk:0 type:HKS_NPC_D_AUDIO_PCM];
+            [client startTalk:-1 type:HKS_NPC_D_AUDIO_PCM];
         }
         task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
     }else{
@@ -158,7 +158,7 @@
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
     if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
         if (state && client.talkState == 0){
-            [client startTalk:0 type:HKS_NPC_D_AUDIO_PCM];
+            [client startTalk:-1 type:HKS_NPC_D_AUDIO_PCM];
         }else if(!state){
             [client stopPPTTalk];
         }
