@@ -8,8 +8,8 @@ source 'https://github.com/umeye/umeye-specs.git'
 target "UMP2PDemo" do
     # App 依赖
     # UM P2P SDK
-    pod 'UMP2P', '2.10.2.2'
-    pod 'UMAccount', '1.2.0'
+    pod 'UMP2P', '2.10.2.3'
+    pod 'UMAccount', '1.2.3'
     # UM功能模块配置
     pod 'UMLaunchKit', :path => 'LocalPods/UMLaunchKit.podspec'
 
