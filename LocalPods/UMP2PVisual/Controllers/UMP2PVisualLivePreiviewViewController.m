@@ -18,6 +18,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    [self playOrStop];
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -125,6 +126,8 @@
         // 停止录像
         [self.viewModel subscribeNext:^(id x) {
             self.mView.recordBtn.selected = NO;
+            // 保存视频到系统相册
+            UISaveVideoAtPathToSavedPhotosAlbum(x, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
             [SVProgressHUD showSuccessWithStatus:@"录像保存成功"];
         } error:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
@@ -140,7 +143,9 @@
     }
     
 }
+- (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
 
+}
 - (void)apMode:(UIButton *)button{
     button.selected = !button.selected;
     [UMUSTSDK setLocalMode:button.selected];
@@ -233,11 +238,9 @@
         //设备密码
         _playItem.sUserPwd = @"";
         //设备通道,从0开始
-        _playItem.iChannel = 2;
+        _playItem.iChannel = 3;
         //设备码流，1:子码流，0:主码流
         _playItem.iStream = 1;
-        //设置设备协议类型，p2p模式可以不填写，直连直接写死UMSP类型
-        _playItem.iVendorId = HKS_NPC_D_MON_VENDOR_ID_UMSP;
 
     }
     return _playItem;
@@ -247,7 +250,7 @@
     if (self.mView.apButton.selected) {
         // ap 模式，使用IP直连
         self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_DIRECT;
-        self.playItem.sAddress = @"192.168.10.247";
+        self.playItem.sAddress = @"192.168.10.109";
         self.playItem.iPort = 5800;
     }else{
         // 正常模式，使用序列号方式连接

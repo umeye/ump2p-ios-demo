@@ -6,7 +6,6 @@
 //
 
 #import "UMP2PLifeDevicesViewModel.h"
-#import <UMP2P/CloudSDK.h>
 @interface UMP2PLifeDevicesViewModel()
 @property (nonatomic, strong) NSMutableArray *devices;
 @end

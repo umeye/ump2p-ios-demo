@@ -10,6 +10,7 @@
 
 @interface UMP2PVisualLivePreiviewViewModel()
 @property (nonatomic, strong) UMP2PVisualClient *client;
+@property (nonatomic, strong) TreeListItem *devItem;
 
 @end
 
@@ -59,7 +60,6 @@
 }
 
 - (void)startOrStop:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-
     [self.client startOrStop:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
@@ -138,6 +138,7 @@
 }
 
 - (void)customFuncJson:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+
     [self.client customFuncJson:^(int iError, id aParam) {
         if (iError != HKS_NPC_D_MPI_MON_ERROR_SUC) {
             NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
@@ -147,7 +148,7 @@
         }
         nextBlock(aParam);
         
-    } devInfo:nil msgId:1000 param:@{@"test":@"xxx"} index:self.displayIndex];
+    } devInfo:nil msgId:12 param:@{@"key":@"tests"} index:0];
 }
 
 - (void)setAudioEnable:(int)audioEnable{
@@ -163,6 +164,7 @@
 }
 
 - (void)setupDeviceConnData:(id)aItem{
+    self.devItem = aItem;
     [self.client setupDeviceConnData:aItem aIndex:self.displayIndex];
 }
 

@@ -30,8 +30,8 @@
     [self.bottomView addSubview:self.soundButton];
     [self.bottomView addSubview:self.apButton];
 }
-
-- (void)updateConstraints{
+- (void)layoutSubviews{
+    [super layoutSubviews];
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.mas_equalTo(0);
         make.height.mas_equalTo(100);
@@ -74,8 +74,8 @@
         }];
         i++;
     }
-    [super updateConstraints];
 }
+
 
 - (void)setupDisplayView:(UIView *)aView{
     [self.displayView addSubview:aView];

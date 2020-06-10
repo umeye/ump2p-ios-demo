@@ -8,7 +8,7 @@
 
 #import "UMP2PPushLaunch.h"
 #import <UMLaunchKit/UMLaunchKit.h>
-#import <UMP2P/CloudSDK.h>
+#import <UMAccount/UMAccount.h>
 #import <GTSDK/GeTuiSdk.h>
 #import <UserNotifications/UserNotifications.h>
 

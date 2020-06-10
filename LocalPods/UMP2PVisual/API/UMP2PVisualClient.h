@@ -88,4 +88,9 @@ typedef void (^UMDataTask)(int iError, id aParam);
 + (void)startSearch:(void (^)(id data, BOOL isUpdate, NSError *error))completionHandler;
 
 + (void)stopSearch;
+
+- (void)customFuncJson:(int)aIndex
+                 msgId:(int)msgId
+                 param:(NSDictionary *)param
+               handler:(void (^)(id data, int iError))completionHandler;
 @end

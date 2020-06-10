@@ -44,6 +44,7 @@ TODO: Add long description of the pod here.
   # 提示组件框架
   s.dependency 'SVProgressHUD'
   s.dependency 'UMP2P'
+  s.dependency 'UMAccount'
   s.dependency 'MJRefresh'
   
   s.prefix_header_contents = <<-EOS

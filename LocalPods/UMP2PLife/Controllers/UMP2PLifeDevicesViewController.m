@@ -11,7 +11,6 @@
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <Masonry/Masonry.h>
 #import <MJRefresh/MJRefresh.h>
-#import <UMP2P/CloudSDK.h>
 #import <UMP2PVisual/UMP2PVisualLivePreiviewViewController.h>
 @interface UMP2PLifeDevicesViewController ()<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) UITableView *tableView;

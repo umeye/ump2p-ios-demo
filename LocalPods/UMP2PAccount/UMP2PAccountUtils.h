@@ -10,7 +10,7 @@
 
 #import <UMViewUtils/UMViewUtils.h>
 #import <Masonry/Masonry.h>
-#import <UMP2P/CloudSDK.h>
+#import <UMAccount/UMAccount.h>
 
 typedef NS_ENUM(NSUInteger, UMHAPICmd){
     /// 登录

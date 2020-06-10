@@ -8,6 +8,7 @@
 
 #import "UMP2PApiClientLaunch.h"
 #import <UMLaunchKit/UMLaunchKit.h>
+#import <UMAccount/UMAccount.h>
 #import <UMP2P/CloudSDK.h>
 #import <UMLog/UMLog.h>
 /// UMP2P 用户系统
@@ -77,9 +78,10 @@ NSString * const LauncherEnvAppIdDefaultValue = @"2000000000";
     //YES：使用SDK自带的登录体系，
     //NO：不需要SDK登录体系，使用UID、用户名、密码直接访问设备
     builder.accountEnable = [umAccount boolValue];
-    // 启动异步请求
-    builder.asyncEnable = YES;
     
+    [UMUSTSDK setConnStateTask:^(int state) {
+        NSLog(@"ust conn state %d", state);
+    }];
     // 启动SDK
     [UMConfig startSDK:appId];
     

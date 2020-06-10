@@ -43,4 +43,5 @@ TODO: Add long description of the pod here.
   
   s.dependency 'UMP2P'
   s.dependency 'UMLog'
+  s.dependency 'UMAccount'
 end

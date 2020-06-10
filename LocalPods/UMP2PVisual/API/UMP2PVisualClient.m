@@ -113,11 +113,12 @@
 // 录像
 - (void)record:(UMDataTask)task index:(int)aIndex param:(NSString *)param{
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
-    NSString *filePath = @"";
     if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
+        NSString *filePath = nil;
         if (client.recordEnabled) {
             filePath = [client stopLocalMP4REC:YES];
         }else{
+            filePath = param;
             [client startRecordToPath:param];
         }
         task(HKS_NPC_D_MPI_MON_ERROR_SUC, filePath);
@@ -145,7 +146,7 @@
         if (client.talkState == 1){
             [client stopPPTTalk];
         }else{
-            [client startPPTTalk];
+            [client startTalk:0 type:HKS_NPC_D_AUDIO_PCM];
         }
         task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
     }else{
@@ -157,7 +158,7 @@
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
     if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
         if (state && client.talkState == 0){
-            [client startPPTTalk];
+            [client startTalk:0 type:HKS_NPC_D_AUDIO_PCM];
         }else if(!state){
             [client stopPPTTalk];
         }
@@ -202,6 +203,9 @@
         }
         task(errorCode, data);
     }];
+    client.hCallbackEx = ^(int iMsgId, void *target, char *in_pDataBuf, id data, int in_iDataLen){
+        NSLog(@"iMsgId %d, %d, %@", iMsgId, in_iDataLen, data);
+    };
 }
 
 #pragma mark - 设备搜索
@@ -246,6 +250,21 @@ static BOOL _isDeviceSearching = NO;
     _isDeviceSearching = NO;
     [HKSDeviceClient stopSearchDevice];
     NSLog(@"停止进行局域网设备发现.");
+}
+
+
+- (void)customFuncJson:(int)aIndex
+                 msgId:(int)msgId
+                 param:(NSDictionary *)param
+               handler:(void (^)(id data, int iError))completionHandler{
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    [client customFuncJson:msgId param:param autoStop:NO handler:^(id data, int errorCode) {
+        if (errorCode == HKS_NPC_D_MPI_MON_ERROR_SUC) {
+            completionHandler(data, nil);
+        }else{
+            completionHandler(nil, errorCode);
+        }
+    }];
 }
 
 #pragma mark - Get/Set
