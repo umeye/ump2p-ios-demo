@@ -74,13 +74,17 @@
         // 如果为回放模式，需要设置回放数据
         if (connModel.isBackplay) {
             ClientModel *recModel = [self deviceRecDataAtIndex:aIndex];
-            if (recModel) {
-                HKSRecFile *recFile = (HKSRecFile *)recModel.obj;
-                [client setRecFileConnParam:recFile];
-            }else{
+            if (!recModel) {
                 //缺少回放数据
                 task(HKS_NPC_D_MPI_MON_ERROR_FAIL, nil);
                 return;
+            }
+            HKSRecFile *recFile = (HKSRecFile *)recModel.obj;
+            [client setRecFileConnParam:recFile];
+            if (recFile.fileName && recFile.fileName.length > 0) {
+                client.timePlayRECEnabled = NO;
+            }else{
+                client.timePlayRECEnabled = YES;
             }
         }
     }
@@ -183,6 +187,24 @@
     }else{
         task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
     }
+}
+
++ (void)deviceInfo:(TreeListItem *)devInfo
+           handler:(void (^)(id data, int iError))completionHandler{
+    HKSDeviceClient *tClient = [[HKSDeviceClient alloc] init];
+    [tClient setDeviceConnParam:devInfo];
+    HKSDeviceInfoItem *model = [[HKSDeviceInfoItem alloc] init];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        int errorCode = [tClient deviceInfo:model];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [tClient stop:YES];
+            if (errorCode == HKS_NPC_D_MPI_MON_ERROR_SUC) {
+                completionHandler(model, errorCode);
+            }else{
+                completionHandler(nil, errorCode);
+            }
+        });
+    });
 }
 
 - (void)customFuncJson:(UMDataTask)task

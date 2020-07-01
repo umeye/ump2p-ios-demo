@@ -1,26 +1,31 @@
 //
-//  UMP2PVisualLivePreiviewViewModel
+//  UMCamVisualFilePlayViewModel
 //  UMP2PVisual
 //
 //  Created by Fred on 2019/3/15.
 //
 
-#import "UMP2PVisualLivePreiviewViewModel.h"
+#import "UMCamVisualFilePlayViewModel.h"
 #import "UMP2PVisualClient.h"
 
-@interface UMP2PVisualLivePreiviewViewModel()
+@interface UMCamVisualFilePlayViewModel()
 @property (nonatomic, strong) UMP2PVisualClient *client;
-@property (nonatomic, strong) TreeListItem *devItem;
+
+@property (nonatomic, strong) HKSRecFile *recFile;
 
 @end
 
-@implementation UMP2PVisualLivePreiviewViewModel
+@implementation UMCamVisualFilePlayViewModel
 
-- (instancetype)init{
-    self = [super init];
+- (instancetype)initWithParams:(NSDictionary *)params{
+    self = [super initWithParams:params];
     if (self) {
+        self.devItem = params[@"dev"];
         self.displayIndex = 0;
         self.playState = HKS_NPC_D_MON_DEV_PLAY_STATUS_READY;
+        
+        self.startTime = [NSString stringFromDate:@"yyyy-MM-dd 00:00:00" date:[NSDate date]];
+        self.endTime = [NSString stringFromDate:@"yyyy-MM-dd 23:59:59" date:[NSDate date]];
     }
     return self;
 }
@@ -52,8 +57,6 @@
         [self talk:nextBlock error:errorBlock];
     }else if (api == 7) {
         [self customFuncJson:nextBlock error:errorBlock];
-    }else if (api == 8) {
-        [self deviceInfo:nextBlock error:errorBlock];
     }else{
         NSString *sError = [NSString stringWithFormat:@"请求错误，该功能ID不支持[%d]", api];
         NSError *err = [NSError errorWithDomain:@"" code:1 userInfo:@{NSLocalizedDescriptionKey : sError}];
@@ -62,6 +65,9 @@
 }
 
 - (void)startOrStop:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    [self.client setupDeviceConnData:self.devItem];
+    [self.client setupDeviceRecData:self.recFile aIndex:self.displayIndex];
+    
     [self.client startOrStop:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
@@ -74,6 +80,9 @@
 }
 
 - (void)start:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    [self.client setupDeviceConnData:self.devItem];
+    [self.client setupDeviceRecData:self.recFile aIndex:self.displayIndex];
+    
     [self.client start:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
@@ -128,6 +137,7 @@
 }
 
 - (void)talk:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    
     [self.client talk:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
@@ -138,6 +148,9 @@
         errorBlock(err);
     } index:self.displayIndex];
 }
+
+
+
 
 - (void)customFuncJson:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
 
@@ -151,18 +164,6 @@
         nextBlock(aParam);
         
     } devInfo:nil msgId:12 param:@{@"key":@"tests"} index:0];
-}
-
-- (void)deviceInfo:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-    [UMP2PVisualClient deviceInfo:self.devItem handler:^(id data, int iError) {
-        if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
-            NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
-            NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
-            errorBlock(err);
-            return;
-        }
-        nextBlock(data);
-    }];
 }
 
 - (void)setAudioEnable:(int)audioEnable{
@@ -191,6 +192,15 @@
 }
 - (UIView *)displayViewAtIndex:(int)aIndex{
     return [self.client displayViewAtIndex:aIndex];
+}
+
+- (HKSRecFile *)recFile{
+    if (!_recFile) {
+        _recFile = [[HKSRecFile alloc] init];
+    }
+    _recFile.startTime = [self dateTimeAtString:self.startTime];
+    _recFile.endTime = [self dateTimeAtString:self.endTime];
+    return _recFile;
 }
 
 - (NSString *)playStateDescription{
@@ -231,4 +241,25 @@
 }
 
 
+- (Date_Time)dateTimeAtString:(NSString *)sDateTime{
+    NSDate *date = [sDateTime dateFromString:nil];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned unit = NSCalendarUnitYear|
+    NSCalendarUnitMonth|
+    NSCalendarUnitDay|
+    NSCalendarUnitHour|
+    NSCalendarUnitMinute|
+    NSCalendarUnitSecond;
+    NSDateComponents *components = [calendar components:unit fromDate:date];
+    
+    Date_Time datetime;
+    datetime.hour = components.hour;
+    datetime.minute = components.minute;
+    datetime.second = components.second;
+    datetime.year = components.year;
+    datetime.month = components.month;
+    datetime.day = components.day;
+    
+    return datetime;
+}
 @end

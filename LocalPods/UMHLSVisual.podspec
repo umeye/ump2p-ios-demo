@@ -1,15 +1,17 @@
 #
-# Be sure to run `pod lib lint UMP2PVisual.podspec' to ensure this is a
+# Be sure to run `pod lib lint UMHLSVisual.podspec' to ensure this is a
 # valid spec before submitting.
 #
 # Any lines starting with a # are optional, but their use is encouraged
 # To learn more about a Podspec see http://guides.cocoapods.org/syntax/podspec.html
 #
+#import <UMViewUtils/UMViewUtils.h>
+#import <ReactiveObjC/ReactiveObjC.h>
 
 Pod::Spec.new do |s|
-  s.name             = 'UMP2PVisual'
+  s.name             = 'UMHLSVisual'
   s.version          = '0.0.1'
-  s.summary          = 'A short description of UMP2PVisual'
+  s.summary          = 'UMHLSVisual'
 
 # This description is used to generate tags and improve search results.
 #   * Think: What does it do? Why did you write it? What is the focus?
@@ -29,23 +31,23 @@ TODO: Add long description of the pod here.
   LICENSE
   }
   s.author           = { '王伏' => 'fred@umeye.com' }
-  s.source           = { :git => 'fred@umeye.com:p2p-visual-ios/#{s.name}.git', :tag => s.version.to_s }
+  s.source           = { :git => 'fred@umeye.com:umhls-visual-ios/#{s.name}.git', :tag => s.version.to_s }
 
-  s.ios.deployment_target = '9.0'
+  s.ios.deployment_target = '8.0'
 
   s.source_files = "#{s.name}/**/*.{h,m}"
   s.resource_bundles = {
-    'UMP2PVisual' => ["#{s.name}/**/*.{xib,storyboard,png,json,lproj,xcassets}"],
+    'UMHLSVisual' => ["#{s.name}/**/*.{xib,storyboard,png,json,lproj,xcassets}"],
   }
-  s.xcconfig = {    'OTHER_LDFLAGS' => '-ObjC'}
-  
+
   s.frameworks = 'UIKit'
+  s.xcconfig = {    'OTHER_LDFLAGS' => '-ObjC'}
   s.dependency 'Masonry'
+  s.dependency 'ReactiveObjC'
+  s.dependency 'UMHLS', '~> 1.1.3'
+  s.dependency 'UMLog'
   
-  # 提示组件框架
-  s.dependency 'SVProgressHUD'
-  s.dependency 'UMP2P'
   s.prefix_header_contents = <<-EOS
-  #import "UMP2PVisualUtils.h"
+  #import "UMHLSVisualUtils.h"
   EOS
 end

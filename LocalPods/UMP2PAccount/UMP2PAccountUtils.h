@@ -11,7 +11,8 @@
 #import <UMViewUtils/UMViewUtils.h>
 #import <Masonry/Masonry.h>
 #import <UMAccount/UMAccount.h>
-
+#import <ReactiveObjC/ReactiveObjC.h>
+#import <UMCategory/UMCategory.h>
 typedef NS_ENUM(NSUInteger, UMHAPICmd){
     /// 登录
     UMHAPICmdLogin = 1,

@@ -7,7 +7,6 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
 
 @interface NSString (UMAdditions)
 
@@ -20,4 +19,3 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSComparisonResult)compareDate:(NSString *)one another:(NSString *)another format:(NSString *)format;
 @end
 
-NS_ASSUME_NONNULL_END

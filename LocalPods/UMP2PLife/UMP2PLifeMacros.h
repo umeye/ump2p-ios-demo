@@ -7,5 +7,6 @@
 
 #import <UMBasis/UMBasis.h>
 #import <UMAccount/UMAccount.h>
+#import <UMCategory/UMCategory.h>
 
 

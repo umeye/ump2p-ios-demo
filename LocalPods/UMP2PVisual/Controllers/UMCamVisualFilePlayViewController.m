@@ -1,22 +1,20 @@
 //
-//  UMP2PVisualLivePreiviewViewController
+//  UMCamVisualFilePlayViewController
 //  UMP2PVisual
 //
 //  Created by Fred on 2019/3/15.
 //
-#import "UMP2PVisualLivePreiviewViewController.h"
-#import "UMP2PVisualLivePreiviewView.h"
-#import "UMP2PVisualLivePreiviewViewModel.h"
-#import "UMP2PVisualClient.h"
 #import "UMCamVisualFilePlayViewController.h"
+#import "UMCamVisualFilePlayView.h"
+#import "UMCamVisualFilePlayViewModel.h"
+#import "UMP2PVisualClient.h"
 #import <Masonry/Masonry.h>
-#import <UMHLSVisual/UMHLSVisual.h>
-@interface UMP2PVisualLivePreiviewViewController()<HKPlayerDelegate>
+@interface UMCamVisualFilePlayViewController()<HKPlayerDelegate>
 
-@property (nonatomic, strong) UMP2PVisualLivePreiviewView *mView;
-@property (nonatomic, strong) UMP2PVisualLivePreiviewViewModel *viewModel;
+@property (nonatomic, strong) UMCamVisualFilePlayView *mView;
+@property (nonatomic, strong) UMCamVisualFilePlayViewModel *viewModel;
 @end
-@implementation UMP2PVisualLivePreiviewViewController
+@implementation UMCamVisualFilePlayViewController
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
@@ -40,7 +38,7 @@
 
 /// 配置导航栏
 - (void)configNavigationForController{
-    self.navigationItem.rightBarButtonItem = [[UIBarButtonItem alloc] initWithTitle:@"回放" style:UIBarButtonItemStyleDone target:self action:@selector(doPlayback)];
+    
 }
 
 /// 创建视图
@@ -92,7 +90,6 @@
 
 #pragma mark -
 - (void)playOrStop{
-    [self.viewModel setupDeviceConnData:self.playItem];
     [self.viewModel subscribeNext:^(id x) {
         
     } error:^(NSError *error) {
@@ -100,10 +97,6 @@
     } api:3];
 }
 
-- (void)doPlayback{
-    UMCamVisualFilePlayViewController *vc = [[UMCamVisualFilePlayViewController alloc] initWithParams:@{@"dev":self.playItem}];
-    [self.navigationController pushViewController:vc animated:YES];
-}
 /// 本地抓拍
 - (void)capture{
     [self.viewModel subscribeNext:^(id x) {
@@ -131,15 +124,10 @@
     if (self.mView.recordBtn.selected) {
         // 停止录像
         [self.viewModel subscribeNext:^(id x) {
-            [SVProgressHUD showSuccessWithStatus:@"录像保存成功"];
             self.mView.recordBtn.selected = NO;
-            
-            // 保存视频到系统相册-用于Demo测试
+            // 保存视频到系统相册
             UISaveVideoAtPathToSavedPhotosAlbum(x, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
-            // 回放本地视频-用于Demo测试
-            UMLocalFilesHLSViewController *vc = [[UMLocalFilesHLSViewController alloc] initWithParams:@{UMParamKeyPath:[NSURL fileURLWithPath:x]}];
-            [self.navigationController pushViewController:vc animated:YES];
-            
+            [SVProgressHUD showSuccessWithStatus:@"录像保存成功"];
         } error:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
         } api:5];
@@ -160,7 +148,6 @@
 - (void)apMode:(UIButton *)button{
     button.selected = !button.selected;
     [UMUSTSDK setLocalMode:button.selected];
-    [self updateDeviceData];
 }
 #pragma mark -
 - (void)appDidEnterBackground:(NSNotification *)note{
@@ -199,14 +186,12 @@
 
 - (void)playerFeedbackPlaying:(id)player{
     [SVProgressHUD dismiss];
-    
 }
-
+#pragma mark 回放
 - (void)playerFeedback:(id)player status:(int)status currentTime:(long)aCurrentTime totalTime:(long)aTotalTime{
 //    HKSDeviceClient *client = player;
 //    NSLog(@"video fps %d", client.iVideoFps);
 }
-
 #pragma mark 对讲
 - (void)playerTalkError:(id)player error:(NSError *)error{
     [SVProgressHUD um_displayErrorWithStatus:@"Talk failed"];
@@ -227,54 +212,18 @@
 }
 
 #pragma mark -
-- (UMP2PVisualLivePreiviewView *)mView{
+- (UMCamVisualFilePlayView *)mView{
     if (!_mView) {
-        _mView = [[UMP2PVisualLivePreiviewView alloc] init];
+        _mView = [[UMCamVisualFilePlayView alloc] init];
     }
     return _mView;
 }
 
-- (UMP2PVisualLivePreiviewViewModel *)viewModel{
+- (UMCamVisualFilePlayViewModel *)viewModel{
     if (!_viewModel) {
-        _viewModel = [[UMP2PVisualLivePreiviewViewModel alloc] init];
+        _viewModel = [[UMCamVisualFilePlayViewModel alloc] initWithParams:self.params];
         [_viewModel setClientDelegate:self];
     }
     return _viewModel;
-}
-
-- (TreeListItem *)playItem{
-    if (!_playItem) {
-        _playItem = [[TreeListItem alloc] init];
-        /*设置设备连接模式：p2p穿透模式或者直连，如果是p2p就需要设置把umid设置给sDeviceId，如果是direct直连模式，就需要把ip和端口设置给sAddress和iPort
-         */
-        _playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
-        //设备序列号
-        _playItem.sDeviceId = @"e528c2b5944f502c";
-        //设备用户名
-        _playItem.sUserId = @"admin";
-        //设备密码
-        _playItem.sUserPwd = @"";
-        //设备通道,从0开始
-        _playItem.iChannel = 0;
-        //设备码流，1:子码流，0:主码流
-        _playItem.iStream = 1;
-
-    }
-    return _playItem;
-}
-
-- (void)updateDeviceData{
-    if (self.mView.apButton.selected) {
-        // ap 模式，使用IP直连
-        self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_DIRECT;
-        self.playItem.sAddress = @"192.168.10.109";
-        self.playItem.iPort = 5800;
-    }else{
-        // 正常模式，使用序列号方式连接
-        self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
-        //设备序列号
-        self.playItem.sDeviceId = @"e528c2b5944f502c";
-        
-    }
 }
 @end

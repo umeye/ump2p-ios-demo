@@ -7,8 +7,12 @@
 //
 
 #import "AppDelegate.h"
+#if __has_include(<UMLaunchKit/UMLauncher.h>)
 #import <UMLaunchKit/UMLauncher.h>
-#import <AVKit/AVKit.h>
+#define kPod
+#else
+#import <UMBasis/UMBasis.h>
+#endif
 @interface AppDelegate ()
 
 @end
@@ -20,9 +24,22 @@
     // Override point for customization after application launch.
     self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     [self.window makeKeyAndVisible];
-    
+#ifdef kPod
     [[UMLauncher defaultLauncher] application:application didFinishLaunchingWithOptions:launchOptions];
-    
+#else
+    [UMConfig builder].sslEnable = YES;
+//    [UMConfig builder].logEnable = YES;
+    [UMConfig startSDK:@"xx"];
+    UIViewController *vc = nil;
+    if (NSClassFromString(@"ViewController")) {
+        Class c = NSClassFromString(@"ViewController");
+        vc = [[c alloc] init];
+    }else if (NSClassFromString(@"PortViewController")) {
+        Class c = NSClassFromString(@"PortViewController");
+        vc = [[c alloc] init];
+    }
+    self.window.rootViewController = vc;
+#endif
     return YES;
 }
 

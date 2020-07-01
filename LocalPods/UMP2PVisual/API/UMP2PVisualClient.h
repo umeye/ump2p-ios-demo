@@ -93,4 +93,7 @@ typedef void (^UMDataTask)(int iError, id aParam);
                  msgId:(int)msgId
                  param:(NSDictionary *)param
                handler:(void (^)(id data, int iError))completionHandler;
+
++ (void)deviceInfo:(TreeListItem *)devInfo
+           handler:(void (^)(id data, int iError))completionHandler;
 @end

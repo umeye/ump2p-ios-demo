@@ -46,6 +46,7 @@ TODO: Add long description of the pod here.
   s.dependency 'UMP2P'
   s.dependency 'UMAccount'
   s.dependency 'MJRefresh'
+  s.dependency 'ReactiveObjC'
   
   s.prefix_header_contents = <<-EOS
   #import "UMP2PAccountUtils.h"

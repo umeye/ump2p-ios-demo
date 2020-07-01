@@ -6,16 +6,17 @@ source 'https://github.com/umeye/umeye-specs.git'
 #use_frameworks!
 
 target "UMP2PDemo" do
+    xcodeproj 'UMP2PDemo.xcodeproj'
     # App 依赖
     # UM P2P SDK
-    pod 'UMP2P', '2.10.2.4'
+    pod 'UMP2P', '2.10.2.5'
     pod 'UMAccount', '1.2.3'
     # UM功能模块配置
     pod 'UMLaunchKit', :path => 'LocalPods/UMLaunchKit.podspec'
-
+    # UM扩充模块
+    pod 'UMCategory', :path => 'LocalPods/UMCategory.podspec'
     # # UM工具类
     pod 'UMViewUtils', :path => 'LocalPods/UMViewUtils.podspec'
-
     # UM SDK 配置
     pod 'UMP2PApiClientLaunch', :path => 'LocalPods/UMP2PApiClientLaunch.podspec'
     
@@ -27,6 +28,8 @@ target "UMP2PDemo" do
     pod 'UMP2PAccount', :path => 'LocalPods/UMP2PAccount.podspec'
     # UM P2P 视频播放模块
     pod 'UMP2PVisual', :path => 'LocalPods/UMP2PVisual.podspec'
+    # UM HLS、MP4文件播放模块
+    pod 'UMHLSVisual', :path => 'LocalPods/UMHLSVisual.podspec'
 end
 
 post_install do |installer|
