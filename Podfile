@@ -9,8 +9,8 @@ target "UMP2PDemo" do
     xcodeproj 'UMP2PDemo.xcodeproj'
     # App 依赖
     # UM P2P SDK
-    pod 'UMP2P', '2.10.2.5'
-    pod 'UMAccount', '1.2.3'
+    pod 'UMP2P', '~> 2.10.3.3'
+    pod 'UMAccount', '~> 1.3.3'
     # UM功能模块配置
     pod 'UMLaunchKit', :path => 'LocalPods/UMLaunchKit.podspec'
     # UM扩充模块
