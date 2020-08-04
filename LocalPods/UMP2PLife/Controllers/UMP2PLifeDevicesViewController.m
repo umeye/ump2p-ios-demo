@@ -82,6 +82,7 @@
 #pragma mark 下拉刷新设备列表
 - (void)headerRereshing{
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.1 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        self.viewModel.sParentNodeId = @"0";
         [self.viewModel subscribeNext:^(id  _Nonnull x) {
             [self.tableView.mj_header endRefreshing];
             [self.tableView reloadData];
