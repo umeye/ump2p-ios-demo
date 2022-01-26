@@ -333,7 +333,7 @@
 				CODE_SIGN_ENTITLEMENTS = UMP2PDemo/UMP2PDemo.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2020.05.11;
-				DEVELOPMENT_TEAM = 6F3GE5ULW8;
+				DEVELOPMENT_TEAM = PY4KCD9F5S;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(TARGET_NAME)/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/UMP2PDemo/Info.plist";
@@ -343,7 +343,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.10.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.umeye.p2pdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.umeye.ump2pDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "UM Deve com.umeye.*";
 				TARGETED_DEVICE_FAMILY = 1;
@@ -359,7 +359,7 @@
 				CODE_SIGN_ENTITLEMENTS = UMP2PDemo/UMP2PDemo.entitlements;
 				CODE_SIGN_STYLE = Manual;
 				CURRENT_PROJECT_VERSION = 2020.05.11;
-				DEVELOPMENT_TEAM = 6F3GE5ULW8;
+				DEVELOPMENT_TEAM = PY4KCD9F5S;
 				ENABLE_BITCODE = NO;
 				GCC_PREFIX_HEADER = "$(TARGET_NAME)/PrefixHeader.pch";
 				INFOPLIST_FILE = "$(SRCROOT)/UMP2PDemo/Info.plist";
@@ -369,7 +369,7 @@
 					"@executable_path/Frameworks",
 				);
 				MARKETING_VERSION = 2.10.1.1;
-				PRODUCT_BUNDLE_IDENTIFIER = com.umeye.p2pdemo;
+				PRODUCT_BUNDLE_IDENTIFIER = com.umeye.ump2pDemo;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "UM Deve com.umeye.*";
 				TARGETED_DEVICE_FAMILY = 1;
