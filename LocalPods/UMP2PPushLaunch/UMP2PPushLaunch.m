@@ -35,6 +35,7 @@ static NSString *const kLauncherEnvAppSecret = @"appSecret";
     [GeTuiSdk setChannelId:@"APPSTORE"];
     // [ GTSdk ]：使用APPID/APPKEY/APPSECRENT创建个推实例
     [GeTuiSdk startSdkWithAppId:appId appKey:appKey appSecret:appSecret delegate:self];
+    [GeTuiSdk runBackgroundEnable:NO];
     [self registerRemoteNotification];
     return TRUE;
 }
