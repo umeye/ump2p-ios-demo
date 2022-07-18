@@ -44,7 +44,7 @@ TODO: Add long description of the pod here.
   s.xcconfig = {    'OTHER_LDFLAGS' => '-ObjC'}
   s.dependency 'Masonry'
   s.dependency 'ReactiveObjC'
-  s.dependency 'UMHLS', '~> 1.3.0'
+  s.dependency 'UMHLS', '~> 1.3.1'
   s.dependency 'UMLog'
   
   s.prefix_header_contents = <<-EOS

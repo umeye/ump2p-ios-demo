@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		06B158F09C8BC049489B62AA /* libPods-UMP2PDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 840922C8A7BD904D5ACA7C6D /* libPods-UMP2PDemo.a */; };
+		6520148A27C7712F0027778B /* test.mp4 in Resources */ = {isa = PBXBuildFile; fileRef = 6520148927C7712F0027778B /* test.mp4 */; };
 		B6AE8F09224E0F8A00F483BE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AE8F08224E0F8A00F483BE /* AppDelegate.m */; };
 		B6AE8F11224E0F8B00F483BE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B6AE8F10224E0F8B00F483BE /* Assets.xcassets */; };
 		B6AE8F17224E0F8B00F483BE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = B6AE8F16224E0F8B00F483BE /* main.m */; };
@@ -15,6 +16,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6520148927C7712F0027778B /* test.mp4 */ = {isa = PBXFileReference; lastKnownFileType = file; path = test.mp4; sourceTree = "<group>"; };
 		840922C8A7BD904D5ACA7C6D /* libPods-UMP2PDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-UMP2PDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6AE8F04224E0F8A00F483BE /* UMP2PDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UMP2PDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B6AE8F07224E0F8A00F483BE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
@@ -74,6 +76,7 @@
 				B6F511D323840B61000ED5DA /* UMP2PDemo.entitlements */,
 				B6AE8F07224E0F8A00F483BE /* AppDelegate.h */,
 				B6AE8F08224E0F8A00F483BE /* AppDelegate.m */,
+				6520148927C7712F0027778B /* test.mp4 */,
 				B6AE8F10224E0F8B00F483BE /* Assets.xcassets */,
 				B6AE8F15224E0F8B00F483BE /* Info.plist */,
 				B6AF0DB12252538D000AB95C /* Launch.json */,
@@ -151,6 +154,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				B6AF0DB22252538D000AB95C /* Launch.json in Resources */,
+				6520148A27C7712F0027778B /* test.mp4 in Resources */,
 				B6AE8F11224E0F8B00F483BE /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
