@@ -11,7 +11,9 @@
 
 @interface UMCamVisualFilePlayViewModel : NSObject<UMViewModelProtocol>
 @property (nonatomic, strong) TreeListItem *devItem;
+
 @property (nonatomic, assign) int displayIndex;
+
 /// 播放状态
 @property (nonatomic, assign) int playState;
 
@@ -21,6 +23,7 @@
 
 @property (nonatomic, copy) NSString *startTime;
 @property (nonatomic, copy) NSString *endTime;
+@property (nonatomic, strong) HKSRecFile *recFile;
 
 /// 根据画面索引获取播放视图
 - (UIView *)displayView;

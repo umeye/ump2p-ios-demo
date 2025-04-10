@@ -20,7 +20,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    [self playOrStop];
+    
 }
 
 - (void)viewWillDisappear:(BOOL)animated{
@@ -45,9 +45,11 @@
 
 /// 创建视图
 - (void)createViewForConctroller{
+    self.mView.apButton.hidden = YES;
     [self.view addSubview:self.mView];
     // 播放视图，添加到显示视图
-    [self.mView setupDisplayView:[self.viewModel displayView]];
+    [self.mView setupTopDisplayView:[self.viewModel displayViewAtIndex:0]];
+    [self.mView setupBottomDisplayView:[self.viewModel displayViewAtIndex:1]];
     [self.view setNeedsUpdateConstraints];
 }
 
@@ -64,13 +66,14 @@
     
     [self.mView.talkButton addTarget:self action:@selector(talk) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.mView.apButton addTarget:self action:@selector(apMode:) forControlEvents:UIControlEventTouchUpInside];
-
+    self.viewModel.devs = self.devs;
     // 更新播放状态
     [RACObserve(self.viewModel, playState) subscribeNext:^(id  _Nullable x) {
         if (self.viewModel.playState == HKS_NPC_D_MON_DEV_PLAY_STATUS_STOP
             || self.viewModel.playState == HKS_NPC_D_MON_DEV_PLAY_STATUS_READY) {
             self.mView.startOrStopBtn.selected = NO;
+        }else  if (self.viewModel.playState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING){
+            
         }else{
             self.mView.startOrStopBtn.selected = YES;
         }
@@ -92,20 +95,23 @@
 
 #pragma mark -
 - (void)playOrStop{
-    [self.viewModel setupDeviceConnData:self.playItem];
-    [self.viewModel subscribeNext:^(id x) {
-        
-    } error:^(NSError *error) {
-        [SVProgressHUD showErrorWithStatus:error.localizedDescription];
-    } api:3];
+    for (int i = 0; i<self.devs.count && i <= self.viewModel.maxDisplayNum; i++){
+        self.viewModel.displayIndex = i;
+        [self.viewModel subscribeNext:^(id x) {
+            
+        } error:^(NSError *error) {
+            [SVProgressHUD showErrorWithStatus:error.localizedDescription];
+        } api:3];
+    }
 }
 
 - (void)doPlayback{
-    UMCamVisualFilePlayViewController *vc = [[UMCamVisualFilePlayViewController alloc] initWithParams:@{@"dev":self.playItem}];
+    UMCamVisualFilePlayViewController *vc = [[UMCamVisualFilePlayViewController alloc] initWithParams:@{@"dev":self.devs[0]}];
     [self.navigationController pushViewController:vc animated:YES];
 }
 /// 本地抓拍
 - (void)capture{
+    self.mView.captureBtn.selected = !self.mView.captureBtn.selected;
     [self.viewModel subscribeNext:^(id x) {
         [SVProgressHUD showSuccessWithStatus:@"抓拍成功"];
     } error:^(NSError *error) {
@@ -126,6 +132,7 @@
     
     self.viewModel.audioEnable = !self.viewModel.audioEnable;
     self.mView.soundButton.selected = self.viewModel.audioEnable;
+    
 }
 - (void)record{
     if (self.mView.recordBtn.selected) {
@@ -137,9 +144,10 @@
             // 保存视频到系统相册-用于Demo测试
             UISaveVideoAtPathToSavedPhotosAlbum(x, self, @selector(video:didFinishSavingWithError:contextInfo:), nil);
             // 回放本地视频-用于Demo测试
+#if 0
             UMLocalFilesHLSViewController *vc = [[UMLocalFilesHLSViewController alloc] initWithParams:@{UMParamKeyPath:[NSURL fileURLWithPath:x]}];
             [self.navigationController pushViewController:vc animated:YES];
-            
+#endif
         } error:^(NSError *error) {
             [SVProgressHUD showErrorWithStatus:error.localizedDescription];
         } api:5];
@@ -157,11 +165,7 @@
 - (void)video:(NSString *)videoPath didFinishSavingWithError:(NSError *)error contextInfo: (void *)contextInfo {
 
 }
-- (void)apMode:(UIButton *)button{
-    button.selected = !button.selected;
-    [UMUSTSDK setLocalMode:button.selected];
-    [self updateDeviceData];
-}
+
 #pragma mark -
 - (void)appDidEnterBackground:(NSNotification *)note{
     /// 后台停止播放
@@ -183,6 +187,9 @@
 #pragma mark -
 #pragma mark 播放
 - (void)playerFeedback:(id)player status:(int)status{
+    if (self.viewModel.playState != status) {
+        NSLog(@"state %d",status);
+    }
     self.viewModel.playState = status;
     if (status == HKS_NPC_D_MON_DEV_PLAY_STATUS_ERROR_NODATA) {
         // 超时无媒体数据返回，重连
@@ -242,39 +249,5 @@
     return _viewModel;
 }
 
-- (TreeListItem *)playItem{
-    if (!_playItem) {
-        _playItem = [[TreeListItem alloc] init];
-        /*设置设备连接模式：p2p穿透模式或者直连，如果是p2p就需要设置把umid设置给sDeviceId，如果是direct直连模式，就需要把ip和端口设置给sAddress和iPort
-         */
-        _playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
-        //设备序列号
-        _playItem.sDeviceId = @"e528c2b5944f502c";
-        //设备用户名
-        _playItem.sUserId = @"admin";
-        //设备密码
-        _playItem.sUserPwd = @"";
-        //设备通道,从0开始
-        _playItem.iChannel = 0;
-        //设备码流，1:子码流，0:主码流
-        _playItem.iStream = 1;
 
-    }
-    return _playItem;
-}
-
-- (void)updateDeviceData{
-    if (self.mView.apButton.selected) {
-        // ap 模式，使用IP直连
-        self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_DIRECT;
-        self.playItem.sAddress = @"192.168.10.109";
-        self.playItem.iPort = 5800;
-    }else{
-        // 正常模式，使用序列号方式连接
-        self.playItem.iConnMode = HKS_NPC_D_MON_DEV_CONN_MODE_CLOUD_P2P;
-        //设备序列号
-        self.playItem.sDeviceId = @"e528c2b5944f502c";
-        
-    }
-}
 @end

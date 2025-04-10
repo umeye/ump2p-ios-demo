@@ -18,6 +18,7 @@
 
 - (void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    
     [self playOrStop];
 }
 
@@ -189,8 +190,7 @@
 }
 #pragma mark 回放
 - (void)playerFeedback:(id)player status:(int)status currentTime:(long)aCurrentTime totalTime:(long)aTotalTime{
-//    HKSDeviceClient *client = player;
-//    NSLog(@"video fps %d", client.iVideoFps);
+    NSLog(@"aCurrentTime %lu,aTotalTime %lu", aCurrentTime, aTotalTime);
 }
 #pragma mark 对讲
 - (void)playerTalkError:(id)player error:(NSError *)error{

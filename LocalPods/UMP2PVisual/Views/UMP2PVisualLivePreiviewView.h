@@ -7,10 +7,10 @@
 
 #import <Foundation/Foundation.h>
 
-
 @interface UMP2PVisualLivePreiviewView : UIView
 /// 视频播放视图
-@property (nonatomic, strong) UIView *displayView;
+@property (nonatomic, strong) UIView *topDisplayView;
+@property (nonatomic, strong) UIView *bottomDisplayView;
 /// 播放状态Label
 @property (nonatomic, strong) UILabel *stateLable;
 /// 菜单视图
@@ -30,6 +30,7 @@
 
 @property (nonatomic, strong) UIButton *apButton;
 
-- (void)setupDisplayView:(UIView *)aView;
+- (void)setupTopDisplayView:(UIView *)aView;
 
+- (void)setupBottomDisplayView:(UIView *)aView;
 @end

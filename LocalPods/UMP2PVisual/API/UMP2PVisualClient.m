@@ -117,7 +117,7 @@
 // 录像
 - (void)record:(UMDataTask)task index:(int)aIndex param:(NSString *)param{
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
-    if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
+    if (client.recordEnabled || client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
         NSString *filePath = nil;
         if (client.recordEnabled) {
             filePath = [client stopLocalMP4REC:YES];
@@ -172,7 +172,6 @@
     }
 }
 
-
 - (void)ptz:(UMDataTask)task
         cmd:(int)aCmd
       index:(int)aIndex {
@@ -184,6 +183,24 @@
         
         [client ptzControlWithCmd:aCmd data:param];
         task(HKS_NPC_D_MPI_MON_ERROR_SUC, nil);
+    }else{
+        task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
+    }
+}
+
+- (void)seek:(UMDataTask)task index:(int)aIndex param:(int)param{
+    HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
+    if (client.playerState == HKS_NPC_D_MON_DEV_PLAY_STATUS_PLAYING) {
+        dispatch_async(dispatch_get_global_queue(0, 0), ^{
+            int errorCode = [client controlRecord:HKS_NPC_D_MON_PLAY_CTRL_SET_PLAY_POS data:param];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                if (errorCode == HKS_NPC_D_MPI_MON_ERROR_SUC) {
+                    task(0, nil);
+                }else{
+                    task(errorCode, nil);
+                }
+            });
+        });
     }else{
         task(HKS_NPC_D_MPI_MON_ERROR_NO_PLAY, nil);
     }
@@ -282,11 +299,34 @@ static BOOL _isDeviceSearching = NO;
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
     [client customFuncJson:msgId param:param autoStop:NO handler:^(id data, int errorCode) {
         if (errorCode == HKS_NPC_D_MPI_MON_ERROR_SUC) {
-            completionHandler(data, nil);
+            completionHandler(data, 0);
         }else{
             completionHandler(nil, errorCode);
         }
     }];
+}
+
++ (void)deviceFileSearch:(TreeListItem *)devInfo
+               startTime:(NSString *)startTime
+                 endTime:(NSString *)endTime
+                    type:(int)type
+                 handler:(void (^)(id data, int iError))completionHandler{
+    HKSDeviceClient *tClient = [[HKSDeviceClient alloc] init];
+    [tClient setDeviceConnParam:devInfo];
+    Date_Time cStartTime = [self dateTimeAtString:startTime];
+    Date_Time cEndTime = [self dateTimeAtString:endTime];
+    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+        NSMutableArray *data = [NSMutableArray array];
+        int errorCode = [tClient searchRecFile:cStartTime end:cEndTime fileType:type outFileList:data];
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [tClient stop:YES];
+            if (errorCode == HKS_NPC_D_MPI_MON_ERROR_SUC) {
+                completionHandler(data, 0);
+            }else{
+                completionHandler(nil, errorCode);
+            }
+        });
+    });
 }
 
 #pragma mark - Get/Set
@@ -306,7 +346,7 @@ static BOOL _isDeviceSearching = NO;
 }
 - (UIView *)displayViewAtIndex:(int)aIndex{
     HKSDeviceClient *client = [self deviceClientAtIndex:aIndex];
-    return client.view;
+    return [client view:aIndex];
 }
 
 - (int)playStateAtIndex:(int)aIndex{
@@ -343,7 +383,8 @@ static BOOL _isDeviceSearching = NO;
     }
     ClientModel *model = [[ClientModel alloc] init];
     model.index = aIndex;
-    model.obj = [[HKSDeviceClient alloc] init];
+    HKSDeviceClient *client = [[HKSDeviceClient alloc] init];
+    model.obj = client;
     [self.deviceClients addObject:model];
     return model;
 }
@@ -435,6 +476,28 @@ static BOOL _isDeviceSearching = NO;
         _deviceRecDatas = [[NSMutableArray alloc] init];
     }
     return _deviceRecDatas;
+}
+
++ (Date_Time)dateTimeAtString:(NSString *)sDateTime{
+    NSDate *date = [sDateTime dateFromString:nil];
+    NSCalendar *calendar = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    unsigned unit = NSCalendarUnitYear|
+    NSCalendarUnitMonth|
+    NSCalendarUnitDay|
+    NSCalendarUnitHour|
+    NSCalendarUnitMinute|
+    NSCalendarUnitSecond;
+    NSDateComponents *components = [calendar components:unit fromDate:date];
+    
+    Date_Time datetime;
+    datetime.hour = components.hour;
+    datetime.minute = components.minute;
+    datetime.second = components.second;
+    datetime.year = components.year;
+    datetime.month = components.month;
+    datetime.day = components.day;
+    
+    return datetime;
 }
 
 @end

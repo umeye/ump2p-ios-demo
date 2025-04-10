@@ -19,7 +19,9 @@
 }
 
 - (void)createViewForView{
-    [self addSubview:self.displayView];
+
+    [self addSubview:self.topDisplayView];
+    [self addSubview:self.bottomDisplayView];
     [self addSubview:self.stateLable];
     [self addSubview:self.bottomView];
     [self addSubview:self.menuView];
@@ -32,23 +34,28 @@
 }
 - (void)layoutSubviews{
     [super layoutSubviews];
+    [self.topDisplayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.mas_equalTo(0);
+        make.height.mas_equalTo(self.topDisplayView.mas_width).multipliedBy(0.56);
+    }];
+    [self.bottomDisplayView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.topDisplayView.mas_bottom);
+        make.left.right.mas_equalTo(0);
+        make.height.mas_equalTo(self.topDisplayView.mas_width).multipliedBy(0.56);
+    }];
+    [self.stateLable mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.bottomDisplayView.mas_bottom);
+        make.left.right.mas_equalTo(0);
+        make.height.mas_equalTo(50);
+    }];
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.left.right.mas_equalTo(0);
-        make.height.mas_equalTo(100);
+        make.height.mas_equalTo(50);
     }];
     [self.menuView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.bottom.mas_equalTo(self.bottomView.mas_top);
         make.left.right.mas_equalTo(0);
-        make.height.mas_equalTo(150);
-    }];
-    [self.stateLable mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.menuView.mas_top);
-        make.left.right.mas_equalTo(0);
-        make.height.mas_equalTo(50);
-    }];
-    [self.displayView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.bottom.mas_equalTo(self.stateLable.mas_top);
-        make.left.right.top.mas_equalTo(0);
+        make.top.mas_equalTo(self.stateLable.mas_bottom);
     }];
     
     NSArray *tViews = @[self.startOrStopBtn, self.captureBtn, self.recordBtn, self.talkButton , self.soundButton];
@@ -63,35 +70,49 @@
         i++;
     }
 
-    tViews = @[self.apButton];
-    i = 0;
-    for (UIView *view in tViews) {
-        [view mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(50);
-            make.width.mas_equalTo(80);
-            make.top.mas_equalTo(self.startOrStopBtn.mas_bottom);
-            make.centerX.mas_equalTo(self.bottomView.mas_right).multipliedBy(((CGFloat)i + 1) / ((CGFloat)tViews.count + 1));
-        }];
-        i++;
-    }
+//    tViews = @[self.apButton];
+//    i = 0;
+//    for (UIView *view in tViews) {
+//        [view mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.height.mas_equalTo(50);
+//            make.width.mas_equalTo(80);
+//            make.top.mas_equalTo(self.startOrStopBtn.mas_bottom);
+//            make.centerX.mas_equalTo(self.bottomView.mas_right).multipliedBy(((CGFloat)i + 1) / ((CGFloat)tViews.count + 1));
+//        }];
+//        i++;
+//    }
 }
 
 
-- (void)setupDisplayView:(UIView *)aView{
-    [self.displayView addSubview:aView];
+- (void)setupTopDisplayView:(UIView *)aView{
+    [self.topDisplayView addSubview:aView];
     [aView mas_remakeConstraints:^(MASConstraintMaker *make) {
         make.left.right.top.bottom.mas_equalTo(0);
     }];
 }
-#pragma mark -
-- (UIView *)displayView{
-    if (!_displayView) {
-        _displayView = [[UIView alloc] init];
-        _displayView.backgroundColor = [UIColor blackColor];
-    }
-    return _displayView;
+
+- (void)setupBottomDisplayView:(UIView *)aView{
+    [self.bottomDisplayView addSubview:aView];
+    [aView mas_remakeConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.bottom.mas_equalTo(0);
+    }];
 }
 
+#pragma mark -
+- (UIView *)topDisplayView{
+    if (!_topDisplayView) {
+        _topDisplayView = [[UIView alloc] init];
+        _topDisplayView.backgroundColor = [UIColor blackColor];
+    }
+    return _topDisplayView;
+}
+- (UIView *)bottomDisplayView{
+    if (!_bottomDisplayView) {
+        _bottomDisplayView = [[UIView alloc] init];
+        _bottomDisplayView.backgroundColor = [UIColor blackColor];
+    }
+    return _bottomDisplayView;
+}
 - (UILabel *)stateLable{
     if (!_stateLable) {
         _stateLable = [[UILabel alloc] init];

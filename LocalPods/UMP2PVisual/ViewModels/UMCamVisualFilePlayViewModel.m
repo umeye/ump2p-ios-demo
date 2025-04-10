@@ -11,8 +11,6 @@
 @interface UMCamVisualFilePlayViewModel()
 @property (nonatomic, strong) UMP2PVisualClient *client;
 
-@property (nonatomic, strong) HKSRecFile *recFile;
-
 @end
 
 @implementation UMCamVisualFilePlayViewModel
@@ -57,7 +55,11 @@
         [self talk:nextBlock error:errorBlock];
     }else if (api == 7) {
         [self customFuncJson:nextBlock error:errorBlock];
-    }else{
+    }else if (api == 8) {
+        [self searchFile:nextBlock error:errorBlock];
+    }
+    
+    else{
         NSString *sError = [NSString stringWithFormat:@"请求错误，该功能ID不支持[%d]", api];
         NSError *err = [NSError errorWithDomain:@"" code:1 userInfo:@{NSLocalizedDescriptionKey : sError}];
         errorBlock(err);
@@ -150,7 +152,21 @@
 }
 
 
-
+- (void)searchFile:(void (^)(id x))nextBlock
+             error:(void (^)(NSError *error))errorBlock{
+    [UMP2PVisualClient deviceFileSearch:self.devItem startTime:@"2020-07-07 00:00:00" endTime:@"2020-07-07 23:25:00" type:HKS_NPC_D_MON_REC_FILE_TYPE_ALL handler:^(id data, int iError) {
+        if (iError != HKS_NPC_D_MPI_MON_ERROR_SUC) {
+            NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
+            NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
+            errorBlock(err);
+            return;
+        }
+        for (HKSRecFile *file in data) {
+            NSLog(@" %@", file.fileName);
+        }
+        nextBlock(data);
+    }];
+}
 
 - (void)customFuncJson:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
 

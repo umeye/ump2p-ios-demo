@@ -9,6 +9,6 @@
 
 @interface UMP2PVisualLivePreiviewViewController : UIViewController<UMViewControllerProtocol>
 
-@property (nonatomic, strong) TreeListItem *playItem;
+@property (nonatomic, strong) NSMutableArray *devs;
 
 @end

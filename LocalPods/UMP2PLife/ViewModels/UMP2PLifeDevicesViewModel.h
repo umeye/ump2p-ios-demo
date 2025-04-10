@@ -15,5 +15,6 @@
 @property (nonatomic, copy) NSString *sParentNodeId;
 
 - (void)updateDatas;
+- (NSMutableArray *)devicesAtParentNodeId:(NSString *)parentNodeId;
 @end
 

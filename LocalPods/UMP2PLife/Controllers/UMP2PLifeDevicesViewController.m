@@ -118,14 +118,18 @@
 
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     TreeListItem *aItem = self.viewModel.datas[indexPath.row];
-    if (aItem.iNodeType != HKS_NPC_D_MPI_MON_DEV_NODE_TYPE_CAMERA) {
+    if (aItem.iNodeType == HKS_NPC_D_MPI_MON_DEV_NODE_TYPE_DIR) {
         // 进入下一级节点
         self.viewModel.sParentNodeId = aItem.sNodeId;
     }else{
         self.viewModel.sParentNodeId = @"0";
         // camera节点，进入播放界面
         UMP2PVisualLivePreiviewViewController *vc = [[UMP2PVisualLivePreiviewViewController alloc] init];
-        vc.playItem = aItem;
+        if (aItem.iNodeType == HKS_NPC_D_MPI_MON_DEV_NODE_TYPE_DVR) {
+            vc.devs = [self.viewModel devicesAtParentNodeId:aItem.sNodeId];
+        }else{
+            vc.devs = [NSMutableArray arrayWithObject:aItem];
+        }
         [self.navigationController pushViewController:vc animated:YES];
     }
 }

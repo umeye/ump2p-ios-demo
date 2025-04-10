@@ -7,7 +7,7 @@
 //
 
 #import "HKColorConfig.h"
-#import "UIColor+UMAdditions.h"
+#import <UMCategory/UIColor+UMAdditions.h>
 #define CONFIG_NAME @"ConfigColor"
 #define CONFIG_NAME_FORMAT @"plist"
 

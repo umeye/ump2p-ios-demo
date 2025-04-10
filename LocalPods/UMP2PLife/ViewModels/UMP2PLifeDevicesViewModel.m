@@ -109,6 +109,16 @@
     }
 }
 
+- (NSMutableArray *)devicesAtParentNodeId:(NSString *)parentNodeId {
+    NSMutableArray *tmpDevs = [NSMutableArray array];
+    for (TreeListItem *aItem in self.devices) {
+        if ([aItem.sParentNodeId isEqualToString:parentNodeId]) {
+            [tmpDevs addObject:aItem];
+        }
+    }
+    return tmpDevs;
+}
+
 - (NSMutableArray *)datas{
     if (!_datas) {
         _datas = [NSMutableArray array];

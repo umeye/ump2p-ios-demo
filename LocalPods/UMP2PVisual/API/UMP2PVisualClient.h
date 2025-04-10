@@ -40,7 +40,7 @@ typedef void (^UMDataTask)(int iError, id aParam);
 /// 根据画面索引获取播放视图
 - (UIView *)displayViewAtIndex:(int)aIndex;
 - (UIView *)displayView;
-
+- (HKSDeviceClient *)deviceClientAtIndex:(int)aIndex;
 /// 播放状态
 - (int)playStateAtIndex:(int)aIndex;
 
@@ -79,11 +79,25 @@ typedef void (^UMDataTask)(int iError, id aParam);
       param:(int)param
       index:(int)aIndex;
 
+- (void)seek:(UMDataTask)task index:(int)aIndex param:(int)param;
+
 - (void)customFuncJson:(UMDataTask)task
                devInfo:(TreeListItem *)devInfo
                  msgId:(int)msgId
                  param:(NSMutableDictionary *)param
                  index:(int)aIndex;
+
+/// 查询存储卡文件录像
+/// @param devInfo 设备连接信息
+/// @param startTime 开始时间
+/// @param endTime 结束时间
+/// @param type 文件类型,HKS_NPC_D_MON_REC_FILE_TYPE_*
+/// @param completionHandler 回调
++ (void)deviceFileSearch:(TreeListItem *)devInfo
+               startTime:(NSString *)startTime
+                 endTime:(NSString *)endTime
+                    type:(int)type
+                 handler:(void (^)(id data, int iError))completionHandler;
 
 + (void)startSearch:(void (^)(id data, BOOL isUpdate, NSError *error))completionHandler;
 

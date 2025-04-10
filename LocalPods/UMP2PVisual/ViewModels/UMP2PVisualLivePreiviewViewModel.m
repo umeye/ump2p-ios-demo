@@ -10,7 +10,6 @@
 
 @interface UMP2PVisualLivePreiviewViewModel()
 @property (nonatomic, strong) UMP2PVisualClient *client;
-@property (nonatomic, strong) TreeListItem *devItem;
 
 @end
 
@@ -20,6 +19,7 @@
     self = [super init];
     if (self) {
         self.displayIndex = 0;
+        self.maxDisplayNum = 2;
         self.playState = HKS_NPC_D_MON_DEV_PLAY_STATUS_READY;
     }
     return self;
@@ -62,6 +62,13 @@
 }
 
 - (void)startOrStop:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
+    TreeListItem *tmpDev = [self curDeviceConnData];
+    if (tmpDev == nil){
+        NSError *err = [NSError errorWithDomain:@"" code:500 userInfo:@{NSLocalizedDescriptionKey : @"没有找到对应的设备数据"}];
+        errorBlock(err);
+    }
+    NSLog(@"tmpDev:[%@]",tmpDev.sNodeName);
+    [self.client setupDeviceConnData:tmpDev aIndex:self.displayIndex];
     [self.client startOrStop:^(int iError, id aParam) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             nextBlock(@{});
@@ -140,7 +147,7 @@
 }
 
 - (void)customFuncJson:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-
+    
     [self.client customFuncJson:^(int iError, id aParam) {
         if (iError != HKS_NPC_D_MPI_MON_ERROR_SUC) {
             NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
@@ -150,11 +157,23 @@
         }
         nextBlock(aParam);
         
-    } devInfo:nil msgId:12 param:@{@"key":@"tests"} index:0];
+    } devInfo:nil msgId:1042 param:[NSMutableDictionary dictionaryWithDictionary:@{@"Name":@"Detect.HumanDetection.[0]",@"SessionID":@"0x000000"}] index:0];
+    
+    /*
+     {
+     "Name":"Detect.HumanDetection.[0]",
+     "SessionID":"0x000000"
+     }
+     */
 }
 
 - (void)deviceInfo:(void (^)(id x))nextBlock error:(void (^)(NSError *error))errorBlock{
-    [UMP2PVisualClient deviceInfo:self.devItem handler:^(id data, int iError) {
+    TreeListItem *tmpDev = [self curDeviceConnData];
+    if (tmpDev == nil){
+        NSError *err = [NSError errorWithDomain:@"" code:500 userInfo:@{NSLocalizedDescriptionKey : @"没有找到对应的设备数据"}];
+        errorBlock(err);
+    }
+    [UMP2PVisualClient deviceInfo:tmpDev handler:^(id data, int iError) {
         if (iError == HKS_NPC_D_MPI_MON_ERROR_SUC) {
             NSString *sError = [NSString stringWithFormat:@"请求停止错误，错误码[%d]", iError];
             NSError *err = [NSError errorWithDomain:@"" code:iError userInfo:@{NSLocalizedDescriptionKey : sError}];
@@ -177,9 +196,11 @@
     return _client;
 }
 
-- (void)setupDeviceConnData:(id)aItem{
-    self.devItem = aItem;
-    [self.client setupDeviceConnData:aItem aIndex:self.displayIndex];
+- (TreeListItem *)curDeviceConnData{
+    if (self.devs.count > self.displayIndex){
+        return self.devs[self.displayIndex];
+    }
+    return nil;
 }
 
 - (void)setClientDelegate:(id)delegate{
@@ -190,7 +211,11 @@
     return [self displayViewAtIndex:self.displayIndex];
 }
 - (UIView *)displayViewAtIndex:(int)aIndex{
-    return [self.client displayViewAtIndex:aIndex];
+    HKSDeviceClient *cli = [self.client deviceClientAtIndex:aIndex];
+    if (cli == nil){
+        return nil;
+    }
+    return [cli view];
 }
 
 - (NSString *)playStateDescription{
