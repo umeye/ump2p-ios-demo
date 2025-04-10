@@ -8,17 +8,17 @@
         "glueClassList": [],
         "opts": {
             "hosts": {
-                "test": "v0p2p.umeye.com",
-                "pre": "v0p2p.umeye.com",
-                "release": "v0p2p.umeye.com"
+                "test": "open-v14.kdzn.top",
+                "pre": "open-v14.kdzn.top",
+                "release": "open-v14.kdzn.top"
             },
             "logs": {
                 "test": true,
                 "pre": false,
                 "release": false
             },
-            "port": "8443",
-            "appId": "20000001",
+            "port": "6203",
+            "appId": "oMTc0NDI3MTI1MzA1OTAx",
             "account": true,
             "ssl": true,
             "push": true

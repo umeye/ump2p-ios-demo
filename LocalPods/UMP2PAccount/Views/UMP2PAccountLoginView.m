@@ -100,7 +100,7 @@
         _userPwdTextField = [[UITextField alloc] init];
         _userPwdTextField.borderStyle = UITextBorderStyleRoundedRect;
         _userPwdTextField.placeholder = @"Password";
-        _userPwdTextField.text = @"111111";
+        _userPwdTextField.text = @"123456";
     }
     return _userPwdTextField;
 }
