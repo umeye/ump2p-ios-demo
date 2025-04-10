@@ -1,4 +1,4 @@
-platform:ios, '9.0'
+platform:ios, '13.0'
 
 source 'https://github.com/CocoaPods/Specs.git'
 source 'https://github.com/umeye/umeye-specs.git'
@@ -9,8 +9,8 @@ target "UMP2PDemo" do
     xcodeproj 'UMP2PDemo.xcodeproj'
     # App 依赖
     # UM P2P SDK
-    pod 'UMAccount', '1.6.5'
-    pod 'UMP2P', '2.10.7.3'
+    pod 'UMAccount', '2.0.2'
+    pod 'UMP2P', '3.0.0.2'
     # UM功能模块配置
     pod 'UMLaunchKit', :path => 'LocalPods/UMLaunchKit.podspec'
     # UM扩充模块
